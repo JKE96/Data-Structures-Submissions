@@ -1,3 +1,18 @@
+/**********************************************************
+ * main.c
+ *
+ * These definitions create the main program that connects to the STM32
+ *
+ * Author: Jarod England username:jkenglan and Minyang Tie username:minytie
+ * Date Created: 9/12/16
+ * Last Modified by: Jarod England
+ * Date Last Modified: 9/12/16
+ * Assignment: C on Discovery
+ * Part of: lab03
+ */
+
+
+
 #include <stm32f30x.h>  // Pull in include files for F30x standard drivers
 
 #include <f3d_led.h>     // Pull in include file for the local drivers
