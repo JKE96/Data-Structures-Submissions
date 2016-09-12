@@ -1,7 +1,16 @@
 /**********************************
  *f3d_user_btn.c 
  *contains the init and read functions for the User Button
- *********************************/
+ *********************************                                                    
+ *                                                                              
+ * Author: Jarod England username:jkenglan and Minyang Tie username:minytie                              
+ * Date Created: 9/12/16                                                        
+ * Last Modified by: Jarod England                                              
+ * Date Last Modified: 9/12/16                                                  
+ * Assignment: C on Discovery                                                   
+ * Part of: lab03                                                               
+ */
+
 #include <stm32f30x.h>
 #include <stm32f30x_gpio.h>
 #include <stm32f30x_rcc.h>

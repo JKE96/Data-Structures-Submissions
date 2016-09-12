@@ -1,6 +1,12 @@
 /************************
- *f3d_led.c - contains intializations/functions for the leds
- ************************/
+ *f3d_led.c - contains intializations/functions for the leds                    
+ * Author: Jarod England jkenglan and Minyang Tie                               
+ * Date Created: 9/12/16                                                        
+ * Last Modified by: Jarod England                                              
+ * Date Last Modified: 9/12/16                                                  
+ * Assignment: C on Discovery                                                   
+ * Part of: lab03                                                               
+ */
 
 #include <stm32f30x.h>
 #include <stm32f30x_gpio.h>
