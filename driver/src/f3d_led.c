@@ -10,28 +10,62 @@
 
 //intializes the port and pins for the leds on the board
 void f3d_led_init(void) {
- 
+  GPIO_InitTypeDef GPIO_InitStructure;
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 |  GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_11|GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 /*Turns on the appropriate led as specified by the parameter.*/
 void f3d_led_on(int led) {
-  /*YOUR CODE HERE*/
+  if(led==8){GPIOE->BSRR = GPIO_Pin_8;}
+  else if(led==9){ GPIOE->BSRR = GPIO_Pin_9;}
+  else if(led==10){ GPIOE->BSRR = GPIO_Pin_10;}
+  else if(led==11){  GPIOE->BSRR = GPIO_Pin_11;}
+  else if(led==12){ GPIOE->BSRR = GPIO_Pin_12;}
+  else if(led==13){  GPIOE->BSRR = GPIO_Pin_13;}
+  else if(led==14){  GPIOE->BSRR = GPIO_Pin_14;}
+  else if(led==15){ GPIOE->BSRR = GPIO_Pin_15;}
 }
 
 /*Turns off the approiate led as specified by the parameter*/ 
 void f3d_led_off(int led) {
-  /*YOUR CODE HERE*/
+  if(led==8){GPIOE->BRR = GPIO_Pin_8;}
+  else if(led==9){ GPIOE->BRR = GPIO_Pin_9;}
+  else if(led==10){ GPIOE->BRR = GPIO_Pin_10;}
+  else if(led==11){  GPIOE->BRR = GPIO_Pin_11;}
+  else if(led==12){ GPIOE->BRR = GPIO_Pin_12;}
+  else if(led==13){  GPIOE->BRR = GPIO_Pin_13;}
+  else if(led==14){  GPIOE->BRR = GPIO_Pin_14;}
+  else if(led==15){ GPIOE->BRR = GPIO_Pin_15;}
 } 
 
 /*Turns on all LEDs*/
 void f3d_led_all_on(void) {
-  /*YOUR CODE HERE*/
- 
+  GPIOE->BSRR = GPIO_Pin_8;
+    GPIOE->BSRR = GPIO_Pin_9;
+    GPIOE->BSRR = GPIO_Pin_10;
+    GPIOE->BSRR = GPIO_Pin_11;
+    GPIOE->BSRR = GPIO_Pin_12;
+    GPIOE->BSRR = GPIO_Pin_13;
+    GPIOE->BSRR = GPIO_Pin_14;
+    GPIOE->BSRR = GPIO_Pin_15;
 } 
 
 /*Turns off all LEDs*/
 void f3d_led_all_off(void) {
-  /*YOUR CODE HERE*/
+    GPIOE->BRR = GPIO_Pin_8;
+    GPIOE->BRR = GPIO_Pin_9;
+    GPIOE->BRR = GPIO_Pin_10;
+    GPIOE->BRR = GPIO_Pin_11;
+    GPIOE->BRR = GPIO_Pin_12;
+    GPIOE->BRR = GPIO_Pin_13;
+    GPIOE->BRR = GPIO_Pin_14;
+    GPIOE->BRR = GPIO_Pin_15;
 } 
 
 /* led.c ends here */
-
