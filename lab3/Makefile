@@ -1,3 +1,13 @@
+#This is the Makefile for the program for lab03
+#* Author: Jarod England username:jkenglan and Minyang Tie username:minytie
+#* Date Created: 9/12/16
+#* Last Modified by: Jarod England
+#* Date Last Modified: 9/12/16
+#* Assignment: C on Discovery
+#* Part of: lab03
+
+
+
 TEMPLATEROOT = ..
 
 # compilation flags for gdb
