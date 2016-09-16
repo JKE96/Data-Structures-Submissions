@@ -1,0 +1,21 @@
+#* Author: Jarod England username:jkenglan and Minyang Tie username:minytie
+#* Date Created: 9/16/16
+#* Last Modified by: Jarod England
+#* Date Last Modified: 9/16/16
+#* Assignment: C on Discovery
+#* Part of: lab03
+
+Questions:
+1.The board has 50MHz of speed, 128 KB flash, and 8KB RAM. 
+2.GPIO stands for General Purpose I/O or General Purpose Input/Output
+3.Yes, because there is no parameter.
+4.PE15 and LD6, PE11 and LD7
+5.These are the public attributes Public Attributes
+uint32_t    GPIO_Pin
+GPIOMode_TypeDef	GPIO_Mode
+GPIOSpeed_TypeDef 	GPIO_Speed
+GPIOOType_TypeDef 	GPIO_OType
+GPIOPuPd_TypeDef 	GPIO_PuPd
+
+
+Difficulties: I included a header file of it's own file while creating it, the the header file in it's own file kept calling itself and was creating an infinite loop.
