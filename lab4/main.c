@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include <stm32f30x.h>  // Pull in include files for F30x standard drivers 
 #include <f3d_led.h>     // Pull in include file for the local drivers
-
+#include <stdio.h>
 // Simple looping delay function
 void delay(void) {
   int i = 2000000;
@@ -46,8 +46,20 @@ int main(void) {
   setvbuf(stderr, NULL, _IONBF, 0);
   
   while (1){
-    putstring("hello"); 
- }
+    int c, newl, newc, neww, word;
+   
+
+    newl = newc = neww = 0;
+    word = 1;
+    while((c = getchar()) != 0x1b) {
+      ++newc;
+      if(c == '\n')
+        ++newl; 
+      if(c == ' ' || c == '\n' || c == '\t')
+	++neww; 
+    } 
+    printf("%d %d %d\n",newl, neww, newc);
+  }
 }
 
 #ifdef USE_FULL_ASSERT
