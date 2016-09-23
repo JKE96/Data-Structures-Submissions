@@ -1,4 +1,4 @@
-#This is the report.txt for lab04
+#This is the Makefile for lab04
 #* Author: Jarod England username:jkenglan and Steven Russell
 #* Date Created: 9/23/16
 #* Last Modified by: Jarod England
