@@ -1,0 +1,17 @@
+#This is the report.txt for lab04
+#* Author: Jarod England username:jkenglan and Steven Russell
+#* Date Created: 9/23/16
+#* Last Modified by: Jarod England
+#* Date Last Modified: 9/23/16
+#* Assignment: lab04
+#* Part of: lab04
+
+Questions
+1.Two connections are required for UART. (Transmission and receive)
+2.The alternate functions are used to indicate whether the UART is sending or receiving data.
+3.The baud rate is the speed that the input and output have for internal clocks.
+4.newlib_stubs is necessary because it provides functions that will not depend on an operating system and it also provides getchar and putchar functions.
+5. If there is a problem with the hardware the Salae Logic Analyzer can see exactly which bits are making it through the SM32 board.
+
+Difficulties
+Our biggest difficulty was with a problem with comparing a NULL. INstead of using the word NULL in our code we used '\0'

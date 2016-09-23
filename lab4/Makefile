@@ -1,3 +1,11 @@
+#This is the report.txt for lab04
+#* Author: Jarod England username:jkenglan and Steven Russell
+#* Date Created: 9/23/16
+#* Last Modified by: Jarod England
+#* Date Last Modified: 9/23/16
+#* Assignment: lab04
+#* Part of: lab04
+
 TEMPLATEROOT = ..
 
 # compilation flags for gdb

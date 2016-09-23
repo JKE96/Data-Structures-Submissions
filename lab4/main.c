@@ -1,28 +1,10 @@
-/* main.c --- 
- * 
- * Filename: main.c
- * Description: 
- * Author: 
- * Maintainer: 
- * Created: Thu Jan 10 11:23:43 2013
- * Last-Updated: 
- *           By: 
- *     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
- */
-
-/* Commentary: 
- * 
- * 
- * 
- */
-
-/* Change log:
- * 
- * 
- */
+/* main.c - contains the main functions for the lab program
+ * Author: Jarod England username:jkenglan and Steven Russell    
+#* Date Created: 9/23/16              
+#* Last Modified by: Jarod England          
+#* Date Last Modified: 9/23/16        
+#* Assignment: lab04                      
+#* Part of: lab04 
 /* Code: */
 
 #include <f3d_uart.h>
