@@ -1,6 +1,15 @@
 #include <f3d_gyro.h>
 #include <stm32f30x.h>
 void f3d_gyro_interface_init() {
+  GPIO_InitTypeDef GPIO_InitStructure;
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOA,&GPIO_InitStructure);
   /**********************************************************************/
   /************** CODE HERE *********************************************/
   //You must configure and initialize the following 4 pins
@@ -12,7 +21,15 @@ void f3d_gyro_interface_init() {
   //MISO PA7
 
   //CS PE3
-
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_3;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOE,&GPIO_InitStructure);
+  GPIO_SetBits(GPIOE, GPIO_Pin_3);
 
   
   //set the CS high
@@ -92,6 +109,22 @@ void f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead) {
 
 /*writing function*/
 void f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite) {
+
+  if (NumByteToWrite > 1) {
+    WriteAddr |= (uint8_t)(0x80 | 0x40); 
+  }
+  else {
+    WriteAddr |= (uint8_t) (0x80);
+  }
+  GYRO_CS_LOW();
+  f3d_gyro_sendbyte(WriteAddr);  
+  while(NumByteToWrite > 0x00) {
+   f3d_gyro_sendbyte(*pBuffer);
+    NumByteToWrite--;
+    pBuffer++;
+  }
+  GYRO_CS_HIGH();
+
   /****************************************************************************/
   /************** CODE HERE *********************************************/
 
@@ -108,6 +141,12 @@ void f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite
 
 /*sends the bytes*/
 static uint8_t f3d_gyro_sendbyte(uint8_t byte) {
+
+  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET); 
+  SPI_SendData8(SPI1, byte);
+
+  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+  return (uint8_t)SPI_ReceiveData8(SPI1);
   /*********************************************************/
   /***********************CODE HERE ************************/
 

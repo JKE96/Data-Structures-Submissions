@@ -1,9 +1,14 @@
 /************************** 
  *f3d_uart.c 
  *contains the initialization basic i/o functions for UART
-****************************/ 
-
-/* Code: */
+****************************
+* Author: Jarod England username:jkenglan and Steven Russell
+#* Date Created: 9/23/16
+#* Last Modified by: Jarod England
+#* Date Last Modified: 9/23/16
+#* Assignment: lab04
+#* Part of: lab04
+Code: */
 
 #include <stm32f30x.h>
 #include <f3d_uart.h>
