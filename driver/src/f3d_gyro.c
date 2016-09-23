@@ -2,7 +2,7 @@
 #include <stm32f30x.h>
 void f3d_gyro_interface_init() {
   GPIO_InitTypeDef GPIO_InitStructure;
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+  //RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -10,18 +10,22 @@ void f3d_gyro_interface_init() {
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOA,&GPIO_InitStructure);
+RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
   /**********************************************************************/
   /************** CODE HERE *********************************************/
   //You must configure and initialize the following 4 pins
 
   //SCK PA5 
-  
-  //MOSI PA6 
+GPIO_PinAFConfig(GPIOA,5,GPIO_AF_5);
+
+  //MOSI PA6
+GPIO_PinAFConfig(GPIOA,6,GPIO_AF_5);
   
   //MISO PA7
+GPIO_PinAFConfig(GPIOA,7,GPIO_AF_5);
 
   //CS PE3
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
+// RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_3;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -29,7 +33,8 @@ void f3d_gyro_interface_init() {
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOE,&GPIO_InitStructure);
-  GPIO_SetBits(GPIOE, GPIO_Pin_3);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
+ GPIO_SetBits(GPIOE, GPIO_Pin_3);
 
   
   //set the CS high
