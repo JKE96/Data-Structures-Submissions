@@ -1,3 +1,13 @@
+#This is the Makefile. This makes the file for the program. 
+#//Author: Jarod England
+#// Date Created: Sept. 2016  
+#// Last Modified by: Jarod England   
+#// Date Last Modified: Oct 5. 2016    
+#// Assignment: Lab5
+#// Part of: lab5 
+
+
+
 TEMPLATEROOT = ..
 
 # compilation flags for gdb

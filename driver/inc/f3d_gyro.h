@@ -1,5 +1,18 @@
 /* f3d_gyro.h */
 
+//This is the header file for the f3d_gyro.c. It holds the declarations for the gyro functions
+//Author: Jarod England 
+// Date Created: Sept. 2016
+// Last Modified by: Jarod England  
+// Date Last Modified: Oct 5. 2016 
+// Assignment: Lab5
+// Part of: lab5 
+
+
+
+
+
+
 /* Code: */
 #include <stm32f30x.h>
 

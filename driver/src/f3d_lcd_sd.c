@@ -41,8 +41,32 @@ static uint8_t madctlcurrent = MADVAL(MADCTLGRAPHICS);
 
 void f3d_lcd_sd_interface_init(void) {
  /* vvvvvvvvvvv pin initialization for the LCD goes here vvvvvvvvvv*/ 
-  
-  
+ 
+  //Initializer Clock 
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+
+  //Initialize OUT pins
+  GPIO_InitTypeDef GPIO_InitStructure;
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11| GPIO_Pin_12;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  //Initialize AF PINS
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource14, GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_5);
   
   
   /* ^^^^^^^^^^^ pin initialization for the LCD goes here ^^^^^^^^^^ */
@@ -60,10 +84,9 @@ void f3d_lcd_sd_interface_init(void) {
   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
   SPI_InitStructure.SPI_CRCPolynomial = 7;
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-  SPI_Init(/*something goes here*/, &SPI_InitStructure);
-  SPI_RxFIFOThresholdConfig(/*somthing goes here*/, SPI_RxFIFOThreshold_QF);
-  SPI_Cmd(/*something goes here*/, ENABLE);
-  
+  SPI_Init(SPI2, &SPI_InitStructure);
+  SPI_RxFIFOThresholdConfig(SPI2, SPI_RxFIFOThreshold_QF);
+  SPI_Cmd(SPI2, ENABLE);
 } 
 
 
@@ -250,6 +273,17 @@ void f3d_lcd_fillScreen(uint16_t color) {
     }
   }
 }
+
+void f3d_lcd_fillScreen2(uint16_t color) {
+  uint8_t y;
+  uint16_t x[ST7735_width];
+  for (y = 0; y < ST7735_width; y++) x[y] = color;
+  f3d_lcd_setAddrWindow (0,0,ST7735_width-1,ST7735_height-1,MADCTLGRAPHICS);
+  for (y=0;y<ST7735_height; y++) {
+    f3d_lcd_pushColor(x,ST7735_width);
+  }
+}
+
 
 void f3d_lcd_drawPixel(uint8_t x, uint8_t y, uint16_t color) {
   if ((x >= ST7735_width) || (y >= ST7735_height)) return;

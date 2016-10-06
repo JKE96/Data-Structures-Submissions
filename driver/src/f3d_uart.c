@@ -49,7 +49,7 @@ int putchar(int c) {
 }
 //gets a character
 int getchar(void) {
-  int c;
+  char c;
   while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == (uint16_t)RESET);
   c = USART_ReceiveData(USART1);
 

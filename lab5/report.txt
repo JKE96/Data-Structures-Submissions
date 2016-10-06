@@ -10,4 +10,4 @@ GYRO_CS_HIGH() is the same as  GPIO_SetBits(GPIOE, GPIO_Pin_3)
 5.Yes because the speeds need to be similar and on-the-fly changes in transmission speed is necessary if you would want to change clock speeds and be able to configure certain programs.
 
 
-Difficulties: I had a lot of issues with the circuit boards while doing this lab. I spent at least an hour and a half struggling with the board trying to get the circuit board to work and I also went to office hours and spent several extra hours in lab and still had problems completing the lab.
+Difficulties: I had a lot of issues with the circuit boards while doing this lab. I spent at least an hour and a half struggling with the board trying to get the circuit board to work and I also went to office hours and spent several extra hours in lab and still had problems completing the lab. I also did not catch my partner's name and he did not show up to the lab the next time to demo the lab.

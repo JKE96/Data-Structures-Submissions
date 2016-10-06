@@ -22,7 +22,8 @@ int main(void) {
   f3d_gyro_init();
   f3d_uart_init();
   f3d_lcd_init();
-  // If you have your inits set up, this should turn your LCD screen red
+  
+  //turns the screen black
   f3d_lcd_fillScreen(BLACK);
   int AXIS=75;
   float a[3] = {1.1, 2.2, 3.3};
@@ -38,10 +39,6 @@ int main(void) {
     int xValue = a[0];
     int yValue = a[1];
     int zValue = a[2];
-
-    int xPrev = xValue;
-    int yPrev = yValue;
-    int zPrev = zValue;
 
     //Drawing the bar for X-value
     drawRect(10,40, 75, AXIS+40, RED);
