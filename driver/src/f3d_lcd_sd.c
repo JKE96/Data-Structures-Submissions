@@ -1,36 +1,15 @@
-/* f3d_lcd_sd.c --- 
- * 
- * Filename: f3d_lcd_sd.c
- * Description: 
- * Author: Bryce Himebaugh
- * Maintainer: 
- * Created: Thu Oct 24 05:18:36 2013
- * Last-Updated: 
- *           By: 
- *     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
- */
+// f3d_lcd_sd.c --- 
+/**********************************************************
+* 
+*
+* Author: Ben Boskin(bboskin) and Jarod England (jkenglan)
+* Date Created: October 10th
+* Last Modified by: Jarod
+* Date Last Modified: October 10th
+* Assignment: lab6
+* Part of: lab6
+*/
 
-/* Commentary: 
- * 
- * 
- * 
- */
-
-/* Change log:
- * 
- * 
- */
-
-/* Copyright (c) 2004-2007 The Trustees of Indiana University and 
- * Indiana University Research and Technology Corporation.  
- * 
- * All rights reserved. 
- * 
- * Additional copyrights may follow 
- */
 
 /* Code: */
 #include <f3d_lcd_sd.h>
