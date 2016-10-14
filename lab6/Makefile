@@ -1,3 +1,18 @@
+#**********************************************************
+# Makefile
+#
+# These definitions set up the I/O interface for the PowerBox.
+#
+# Author: Ben Boskin(bboskin) and Jarod England(jkenglan)
+# Date Created: OCt10th
+# Last Modified by: Jarod
+# Date Last Modified: Oct10th
+# Assignment: lab6
+# Part of: lab6
+#/
+
+
+
 TEMPLATEROOT = ..
 
 # compilation flags for gdb

@@ -1,10 +1,16 @@
 /* main.c ---
 *
 * Filename: main.c
-* Description:
-* Author:
-* Maintainer:
-* Created: Thu Jan 10 11:23:43 2013
+* Description: Holds the main functions for the gyro bar graph
+* Author: Ben Boskin(bboskin) with Jarod England(jkenglan)
+* Maintainer: Jarod
+* Date Created: Oct 10th
+* Last Modified by: Jarod
+* Date Last Modified: Oct 10th
+* Assignment: lab6
+* Part of: lab6
+*/
+
 /* Code: */
 
 #include <stm32f30x.h> // Pull in include files for F30x standard drivers

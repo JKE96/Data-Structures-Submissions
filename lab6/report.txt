@@ -1,0 +1,14 @@
+Jarod England jkenglan with Ben Boskin (bboskin) 
+
+1. Printf debugging lets the user know what is being executed and when it is being executed, but it does not give certain aspects as to why the certain errors are occuring.
+
+2. The spiReadWrite function is called inside a higher level peripheral function because the program/function would not be able to function correctly if it was not put in this location.
+
+3. LCD_CS_DEASSERT() is used to stop communication or deassert communication during the initialization process. It is important to stop undesired behavior and unneeded communication to the circuit board.
+
+4.The array in glcdfont.c gives positions for each of the characters as to where to draw the characters using 5 different bytes.  These bytes give the positions for where the LCD screen can write.
+
+5. THe f3d_lcd_fillScreen was 0.25 sec and the second one was about 0.5 sec according to our super- precise phone stopwatch.
+
+Difficulties: I deleted our origin main.c function but it turns out the program was not functioning in the desired manner that the AI's preferred anyways.
+
