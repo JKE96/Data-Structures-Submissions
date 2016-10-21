@@ -1,0 +1,23 @@
+Jarod England jkenglan with Joel Park jgpark
+
+1. It has several pins. Pin# Name Function
+1 Vdd_IO Power supply for I/O pins
+2 SCL Signal interface I2C serial clock (SCL)
+3 SDA Signal interface I2C serial data (SDA)
+4 INT2 Inertial Interrupt 2
+5 INT1 Inertial Interrupt 1
+6 C1 Reserved capacitor connection (C1)
+7 GND 0 V supply
+8 Reserved Leave unconnected
+9 DRDY Data ready
+10 Reserved Connect to GND
+11 Reserved Connect to GND
+12 SETP S/R capacitor connection (C2)
+13 SETC S/R capacitor connection (C2)
+14 Vdd Power supply
+    2.16 V to 3.6 V
+It is somewhat near the side of the board next to where the wires were connected during the lab.
+
+3.It is used with the accelerometer and it obtains data from it and stores it in an array
+
+4.Tilt compensation would be helpful because it can help the precision of the compass and it would keep from giving an odd compass location.
