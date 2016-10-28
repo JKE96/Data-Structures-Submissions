@@ -1,3 +1,9 @@
+//By Jarod England jkengland and Shihan zhang
+//Oct 27th
+//lab8
+
+
+
 
 #include <stm32f30x.h> // Pull in include files for F30x standard drivers
 
