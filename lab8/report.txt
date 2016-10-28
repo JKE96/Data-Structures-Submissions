@@ -1,0 +1,11 @@
+Jarod England with Shihan
+
+Difficulties and what I learned:
+Adding all the programs seemed to be somewhat of a problem because it took some time to come up with a solution to make the programs switch.  I learned how to convert certain values during the lab and I learned how to come up with a working solution to the nunchuk program.
+
+
+Lab Questions
+Q1. For the nunchuk we wrote the initial values to configure the peripheral during this lab.
+Q2. The major difference between the funtions is that the nunchuk_read function obtains the information using the i2c read command from the nunchuk and puts it into the nunchuk structure while the i2c command actually reads the information from the board that is later used.
+Q3.jx is the joystick x jy is the joystick y ax is the controller position x ay is the controller position y az is the controller position z char c tells if c is pressed or not and char z tells if z is pressed or not.
+Q4.The code above assigns 1 or zero to the values of c and z accordingly.
