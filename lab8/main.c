@@ -308,7 +308,7 @@ int main(void) {
 
     ////lab7
     if(program== 0){
-    
+        f3d_lcd_drawString(0,65,"lab7part1accelerometer",BLACK,WHITE);
       //printf("acceldata\n");
       f3d_accel_read(accelArray);
       float  AX = accelArray[0];
@@ -339,9 +339,7 @@ int main(void) {
     }//end of if
 
     else if(program ==1){ //lab7
-
-      f3d_mag_read(magArray);
-       
+        f3d_lcd_drawString(0,65,"lab7part2 compass",BLACK,WHITE);      f3d_mag_read(magArray);
       float heading = atan2f(magArray[1],magArray[0]);
        
       float dir = heading*(180.0/3.141592654);
@@ -382,14 +380,14 @@ int main(void) {
 
     //lab6
     else if (program ==2){
-      lab6(); //goes to lab6 function was having odd gyro error. Uncomment to fix later
+        f3d_lcd_drawString(0,65,"lab6",BLACK,WHITE);      lab6(); //goes to lab6 function was having odd gyro error. Uncomment to fix later
     }//end of else if
 
 
     //lab8
     else{ //program == 3
-
-      int pnum = num;
+        f3d_lcd_drawString(0,65,"lab8nunchuk",BLACK,WHITE);
+        int pnum = num;
       int pnumy = numy;
         
 
