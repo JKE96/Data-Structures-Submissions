@@ -55,6 +55,11 @@ rect_t ball;
 int ball_vx = 1;
 int ball_vy = 2;
 
+FILE *gc;
+
+char line[200];
+
+
 /*The event loop that handles the key input*/
 void event_loop(void) {
   static int paddle_left_move = 0; 
@@ -98,6 +103,12 @@ void event_loop(void) {
       printf("Q PRESSED - Exit Program\n");
       exit(0);
       break;
+    case SDLK_n:
+      printf("Gyro coordinates:");
+      fgets(line,sizeof(line),gc);
+      printf("%s",line);
+      drawString(0,0,line,WHITE,BLACK);
+      break;
     default:
       break;
     }
@@ -139,6 +150,10 @@ void pong_game(void) {
 
 /*Where the pong_game() is called the rectangels are initialized. */
 int c335_main( int argc, char *argv[] ) {
+
+  gc = fopen(argv[2], "r");
+ 
+
 
   fillScreen(BLACK);
   initRect(&left_paddle,0,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);

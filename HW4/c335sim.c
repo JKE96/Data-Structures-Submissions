@@ -57,6 +57,7 @@ void Delay(int millis)
 int SDL_main(int argc, char *argv[])
 {
 
+
   int result;
 
   //Start SDL
@@ -68,9 +69,14 @@ int SDL_main(int argc, char *argv[])
 
   //Set up screen
 
-  init_screen(portrait);
-  // init_screen(landscape);
 
+  if(!strcmp(argv[1],"portrait") || !strcmp(argv[1],"PORTRAIT")){
+    init_screen(portrait);
+  }
+  else{
+    init_screen(landscape);
+  }
+  
   SDL_AddTimer(50, signal_handler, 0);
 
   result = c335_main(argc, argv);
