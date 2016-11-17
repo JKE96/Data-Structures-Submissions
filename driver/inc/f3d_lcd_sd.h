@@ -1,3 +1,4 @@
+
 /* f3d_lcd_sd.h --- 
  * 
  * Filename: f3d_lcd_sd.h
@@ -54,9 +55,8 @@
 #define LCD_CS_DEASSERT()  GPIO_SetBits(GPIOB, GPIO_Pin_12)
 
 // Create these macros needed for the SD card interface in the ff9b code
-#define SD_CS_HIGH() 1
-#define SD_CS_LOW() 0 
-// #define SD_CS_LOW()  
+#define SD_CS_HIGH() GPIO_SetBits(GPIOB, GPIO_Pin_8)
+#define SD_CS_LOW()  GPIO_ResetBits(GPIOB, GPIO_Pin_8)
 
 #define GPIO_PIN_SCE GPIO_Pin_12    
 
@@ -111,4 +111,3 @@ static void LcdWrite16(char dc,const uint16_t *data,int cnt);
 
 
 /* f3d_lcd_sd.h ends here */
-

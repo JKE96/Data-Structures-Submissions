@@ -141,7 +141,7 @@ void f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite
   if (NumByteToWrite > 1) {
     WriteAddr |= (uint8_t)(0x80 | 0x40); // sets to multibyte mode
   }
-  /*else {
+  /*zelse {
     WriteAddr |= (uint8_t) (0x80); // sets to read mode (first bit 1)
     }*/
 

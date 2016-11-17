@@ -1,13 +1,27 @@
 /* f3d_uart.h --- 
  * 
  * Filename: f3d_uart.h
- * Description: header file for f3d_uart.c
- * Author: Jarod England username:jkenglan and Steven Russell 
-#* Date Created: 9/23/16
-#* Last Modified by: Jarod England
-#* Date Last Modified: 9/23/16                                                
-#* Assignment: lab04                                                        
-#* Part of: lab04  
+ * Description: 
+ * Author: Bryce Himebaugh
+ * Maintainer: 
+ * Created: Thu Sep 26 07:05:43 2013
+ * Last-Updated: 
+ *           By: 
+ *     Update #: 0
+ * Keywords: 
+ * Compatibility: 
+ * 
+ */
+
+/* Commentary: 
+ * 
+ * 
+ * 
+ */
+
+/* Change log:
+ * 
+ * 
  */
 
 /* Copyright (c) 2004-2007 The Trustees of Indiana University and 
