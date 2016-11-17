@@ -12,7 +12,7 @@ OBJDUMP=$(TOOLROOT)/arm-none-eabi-objdump
 CFLAGS = -g -mcpu=cortex-m0 -mthumb -specs=rdimon.specs -lc -lrdimon
 LDFLAGS =
 
-OBJS = test.o orrs.o
+OBJS = main.o push.o pop.o operations.o
 
 $(ELF) : $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $@
@@ -39,5 +39,3 @@ debug: $(ELF)
 
 clean: 
 	rm -f $(OBJS) $(ELF) $(OBJS:.o=.lst)
-
-     

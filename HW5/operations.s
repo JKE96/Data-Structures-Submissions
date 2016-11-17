@@ -17,3 +17,9 @@ dealloc:
 	b1 free
 	pop {r3, pc}
 	.end
+
+//	.global add
+//	.type add, %function
+//add:
+//	nop
+//???
