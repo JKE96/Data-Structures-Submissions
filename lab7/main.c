@@ -166,7 +166,7 @@ int main(void) {
   drawRect(0, 1000, AXIS, AXIS, BLACK);
 
   while(1){    
-
+    printf("testing serialT\n");
     if(user_btn_read()== 0){
     
     //printf("acceldata\n");
@@ -206,7 +206,7 @@ int main(void) {
       float heading = atan2f(magArray[1],magArray[0]);
        
        float dir = heading*(180.0/3.141592654);
-       int light = 8; //8 - 16
+       int light = 8; //8 - 15
 
        if(dir<=22.5 && dir >=-22.5){
 	 light = 13;

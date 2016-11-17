@@ -28,14 +28,14 @@ int gitBitsChar(unsigned char c, char answer[]){
 }
 
 int gitBitsShort(unsigned short s, char answer[]){
-  int i = 16;
-  while(s<16){
+  int i = 15;
+  while(s!=0){
     if(s&1) answer[i] = '1';
     else answer[i] = '0';
-    s=s<<1;
-    i++;
+    s=s>>1;
+    i--;
   }
-  answer[i]=0;
+  answer[16]='\0';
   return 0;
 }
 

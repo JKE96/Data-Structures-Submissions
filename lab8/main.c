@@ -29,6 +29,13 @@ int AXIS = 75;
 int BOOSTER = 750;
 
    
+float a[3] = {1.1, 2.2, 3.3};
+
+int xValue, yValue, zValue;
+int xPrev = 0, yPrev = 0, zPrev = 0;
+
+
+
 float xprev = 0.0;
 float yprev = 0.0;
 float zprev = 0.0;
@@ -75,7 +82,6 @@ void drawRect(int x1, int x2, int y1, int y2, uint16_t color){
     }
   }
 }
-
 
 void accelDraw(float alpx,float alpy,float alpz, float xp, float yp, float zp){
   float xPrev = xp*BOOSTER;
@@ -131,8 +137,121 @@ void accelDraw(float alpx,float alpy,float alpz, float xp, float yp, float zp){
   else if (zValue >= 0 && zPrev <= 0) {
     drawRect(90, 120, AXIS, AXIS - zPrev, WHITE);
   }
-  
 }
+
+void wii(float alpx,float alpy,float alpz, float xp, float yp, float zp){
+  int booster = 10;
+  float xPrev = xp*booster;
+  float yPrev = yp*booster;
+  float zPrev = zp*booster;
+  float xValue = alpx*booster;
+  float yValue = alpy*booster;
+  float zValue = alpz*booster;
+
+  //Draw the X-value meter
+  drawRect(10, 40, AXIS, AXIS - xValue, RED);
+  delayy();
+  if (xValue >= 0 && xPrev >= 0 && xPrev >= xValue) {
+    drawRect(10, 40, AXIS - xPrev, AXIS - xValue, WHITE);
+  }
+  else if (xValue <= 0 && xPrev <= 0 && xPrev <= xValue) {
+    drawRect(10, 40, AXIS - xPrev, AXIS - xValue, WHITE);
+  }
+  else if (xValue <= 0 && xPrev >= 0) {
+    drawRect(10, 40, AXIS, AXIS - xPrev, WHITE);
+  }
+  else if (xValue >= 0 && xPrev <= 0) {
+    drawRect(10, 40, AXIS, AXIS - xPrev, WHITE);
+  }
+
+  //Draw the Y-value meter
+  drawRect(50, 80, AXIS, AXIS - yValue, GREEN);
+  delayy();
+  if (yValue >= 0 && yPrev >= 0 && yPrev >= yValue) {
+    drawRect(50, 80, AXIS - yPrev, AXIS - yValue, WHITE);
+  }
+  else if (yValue <= 0 && yPrev <= 0 && yPrev <= yValue) {
+    drawRect(50, 80, AXIS - yPrev, AXIS - yValue, WHITE);
+  }
+  else if (yValue <= 0 && yPrev >= 0) {
+    drawRect(50, 80, AXIS, AXIS - yPrev, WHITE);
+  }
+  else if (yValue >= 0 && yPrev <= 0) {
+    drawRect(50, 80, AXIS, AXIS - yPrev, WHITE);
+  }
+  //Draw the Z-value meter
+  drawRect(90, 120, AXIS, AXIS - zValue, BLUE);
+  delayy();
+  if (zValue >= 0 && zPrev >= 0 && zPrev >= zValue) {
+    drawRect(90, 120, AXIS - zPrev, AXIS - zValue, WHITE);
+  }
+  else if (zValue <= 0 && zPrev <= 0 && zPrev <= zValue) {
+    drawRect(90, 120, AXIS - zPrev, AXIS - zValue, WHITE);
+  }
+  else if (zValue <= 0 && zPrev >= 0) {
+    drawRect(90, 120, AXIS, AXIS - zPrev, WHITE);
+  }
+  else if (zValue >= 0 && zPrev <= 0) {
+    drawRect(90, 120, AXIS, AXIS - zPrev, WHITE);
+  }
+}
+
+void boxes(int alpx,int alpy,int alpz, int xp, int yp, int zp){
+  float xPrev = xp;
+  float yPrev = yp;
+  float zPrev = zp;
+  float xValue = alpx;
+  float yValue = alpy;
+  float zValue = alpz;
+
+  //Draw the X-value meter
+  drawRect(10, 40, AXIS, AXIS - xValue, RED);
+  delayy();
+  if (xValue >= 0 && xPrev >= 0 && xPrev >= xValue) {
+    drawRect(10, 40, AXIS - xPrev, AXIS - xValue, WHITE);
+  }
+  else if (xValue <= 0 && xPrev <= 0 && xPrev <= xValue) {
+    drawRect(10, 40, AXIS - xPrev, AXIS - xValue, WHITE);
+  }
+  else if (xValue <= 0 && xPrev >= 0) {
+    drawRect(10, 40, AXIS, AXIS - xPrev, WHITE);
+  }
+  else if (xValue >= 0 && xPrev <= 0) {
+    drawRect(10, 40, AXIS, AXIS - xPrev, WHITE);
+  }
+
+  //Draw the Y-value meter
+  drawRect(50, 80, AXIS, AXIS - yValue, GREEN);
+  delayy();
+  if (yValue >= 0 && yPrev >= 0 && yPrev >= yValue) {
+    drawRect(50, 80, AXIS - yPrev, AXIS - yValue, WHITE);
+  }
+  else if (yValue <= 0 && yPrev <= 0 && yPrev <= yValue) {
+    drawRect(50, 80, AXIS - yPrev, AXIS - yValue, WHITE);
+  }
+  else if (yValue <= 0 && yPrev >= 0) {
+    drawRect(50, 80, AXIS, AXIS - yPrev, WHITE);
+  }
+  else if (yValue >= 0 && yPrev <= 0) {
+    drawRect(50, 80, AXIS, AXIS - yPrev, WHITE);
+  }
+  //Draw the Z-value meter
+  drawRect(90, 120, AXIS, AXIS - zValue, BLUE);
+  delayy();
+  if (zValue >= 0 && zPrev >= 0 && zPrev >= zValue) {
+    drawRect(90, 120, AXIS - zPrev, AXIS - zValue, WHITE);
+  }
+  else if (zValue <= 0 && zPrev <= 0 && zPrev <= zValue) {
+    drawRect(90, 120, AXIS - zPrev, AXIS - zValue, WHITE);
+  }
+  else if (zValue <= 0 && zPrev >= 0) {
+    drawRect(90, 120, AXIS, AXIS - zPrev, WHITE);
+  }
+  else if (zValue >= 0 && zPrev <= 0) {
+    drawRect(90, 120, AXIS, AXIS - zPrev, WHITE);
+  }
+}
+
 
 drawBAR(int n, int prev, int one, int two){
   if(n!=prev){
@@ -150,82 +269,6 @@ drawBAR2(int n, int prev, int one, int two){
     drawRect(one, two, b, b+1, WHITE);
     drawRect(one, two, a, a+1, BLUE);
   }
-}
-
-
-void lab6(){
-  printf("lab6");
-  while(!user_btn_read()){
-    printf("lab6while..uncomment the code to make lab6 work");
-    float a[3] = {1.1, 2.2, 3.3};
-
-      int xValue, yValue, zValue;
-      int xPrev = 0, yPrev = 0, zPrev = 0;
-
-      f3d_gyro_getdata(a);
-      xPrev = xValue;
-      yPrev = yValue;
-      zPrev = zValue;
-      xValue = a[0];
-      yValue = a[1];
-      zValue = a[2];
-
-      printf("x value");
-      //Draw the X-value meter
-      drawRect(10, 40, AXIS, AXIS - xValue, RED);
-      delayy();
-      if (xValue >= 0 && xPrev >= 0 && xPrev >= xValue) {
-	drawRect(10, 40, AXIS - xPrev, AXIS - xValue, WHITE);
-      }
-      else if (xValue <= 0 && xPrev <= 0 && xPrev <= xValue) {
-	drawRect(10, 40, AXIS - xPrev, AXIS - xValue, WHITE);
-      }
-      else if (xValue <= 0 && xPrev >= 0) {
-	drawRect(10, 40, AXIS, AXIS - xPrev, WHITE);
-      }
-      else if (xValue >= 0 && xPrev <= 0) {
-	drawRect(10, 40, AXIS, AXIS - xPrev, WHITE);
-      }
-      else{}
-
-      printf("yvalue");
-      //Draw the Y-value meter
-      drawRect(50, 80, AXIS, AXIS - yValue, GREEN);
-      delayy();
-      if (yValue >= 0 && yPrev >= 0 && yPrev >= yValue) {
-	drawRect(50, 80, AXIS - yPrev, AXIS - yValue, WHITE);
-      }
-      else if (yValue <= 0 && yPrev <= 0 && yPrev <= yValue) {
-	drawRect(50, 80, AXIS - yPrev, AXIS - yValue, WHITE);
-      }
-      else if (yValue <= 0 && yPrev >= 0) {
-	drawRect(50, 80, AXIS, AXIS - yPrev, WHITE);
-      }
-      else if (yValue >= 0 && yPrev <= 0) {
-	drawRect(50, 80, AXIS, AXIS - yPrev, WHITE);
-      }
-      else{}
-
-
-      printf("zvalue");
-      //Draw the Z-value meter
-      drawRect(90, 120, AXIS, AXIS - zValue, BLUE);
-      delayy();
-      if (zValue >= 0 && zPrev >= 0 && zPrev >= zValue) {
-	drawRect(90, 120, AXIS - zPrev, AXIS - zValue, WHITE);
-      }
-      else if (zValue <= 0 && zPrev <= 0 && zPrev <= zValue) {
-	drawRect(90, 120, AXIS - zPrev, AXIS - zValue, WHITE);
-      }
-      else if (zValue <= 0 && zPrev >= 0) {
-	drawRect(90, 120, AXIS, AXIS - zPrev, WHITE);
-      }
-      else if (zValue >= 0 && zPrev <= 0) {
-	drawRect(90, 120, AXIS, AXIS - zPrev, WHITE);
-      }
-      else{}
-      //lab6
-  }//closes lab6 while loop
 }
 
 
@@ -253,8 +296,8 @@ int main(void) {
   nunchuk_t nun;
 
 
-    int c=0;
-    int z=0;
+  int c=0;
+  int z=0;
 
   float magArray[3] = {1.1, 2.2, 3.3};
 
@@ -280,7 +323,7 @@ int main(void) {
       num = nun.jx;
       numy = nun.jy;
 
-    if(user_btn_read()||c==1|| num ==0){
+    if(user_btn_read()||c==1|| num ==255){
       program = program+1;
       program = program %4;
       printf("-----%d\n",program);
@@ -293,7 +336,7 @@ int main(void) {
       f3d_lcd_fillScreen(WHITE);
       drawRect(0, 1000, AXIS, AXIS, BLACK);
     }
-    else if(z==1||num==255){
+    else if(z==1||num==0){
         if(program==0){
             program = 3;
         }
@@ -314,12 +357,14 @@ int main(void) {
 
     ////lab7
     if(program== 0){
-        f3d_lcd_drawString(0,65,"lab7part1accelerometer",BLACK,WHITE);
+        f3d_lcd_drawString(0,150,"lab7part1accelerometer",BLACK,WHITE);
       //printf("acceldata\n");
       f3d_accel_read(accelArray);
       float  AX = accelArray[0];
       float AY = accelArray[1];
       float AZ = accelArray[2];
+
+      printf("AX%f AY%f AZ%f",AX,AY,AZ);
 
       float alphaX = atan2f(AX,g); //tilt angle
 
@@ -345,7 +390,8 @@ int main(void) {
     }//end of if
 
     else if(program ==1){ //lab7
-        f3d_lcd_drawString(0,65,"lab7part2 compass",BLACK,WHITE);      f3d_mag_read(magArray);
+        f3d_lcd_drawString(0,150,"lab7part2 compass",BLACK,WHITE);     
+	f3d_mag_read(magArray);
       float heading = atan2f(magArray[1],magArray[0]);
        
       float dir = heading*(180.0/3.141592654);
@@ -386,21 +432,36 @@ int main(void) {
 
     //lab6
     else if (program ==2){
-        f3d_lcd_drawString(0,65,"lab6",BLACK,WHITE);      lab6(); //goes to lab6 function was having odd gyro error. Uncomment to fix later
-    }//end of else if
+      f3d_lcd_drawString(0,150,"lab6",BLACK,WHITE);     
+	
+
+      printf("lab6");
+
+      f3d_gyro_getdata(a);
+      xPrev = xValue;
+      yPrev = yValue;
+      zPrev = zValue;
+      xValue = a[0];
+      yValue = a[1];
+      zValue = a[2];
+
+      printf("x value: %d", xValue);
+      //Draw the X-value meter
+      boxes(xValue,yValue,zValue,xPrev,yPrev,zPrev);
+  }//end of else if
 
 
-    //lab8
-    else{ //program == 3
-        f3d_lcd_drawString(0,65,"lab8nunchuk",BLACK,WHITE);
-        int pnum = num;
-      int pnumy = numy;
+  //lab8
+  else{ //program == 3
+    f3d_lcd_drawString(0,150,"lab8nunchuk",BLACK,WHITE);
+    int pnum = num;
+    int pnumy = numy;
         
 
-      f3d_nunchuk_read(&nun);
+    f3d_nunchuk_read(&nun);
 
-       /*
-        num = nun.jx; //goes from 0 - 255
+    /*
+      num = nun.jx; //goes from 0 - 255
       // printf("num:%d",num);
       char tx[5];
       snprintf(tx,5, "%d", num);
@@ -422,39 +483,37 @@ int main(void) {
       */
         
         
-      int inunax = nun.ax;
-      int inunay = nun.ay;
-      int inunaz = nun.az;
+    float inunax = nun.ax;
+    float inunay = nun.ay;
+    float inunaz = nun.az;
         
-      float alphaX = atan2f(inunax,g); //tilt angle
-      float alphaY = atan2f(inunay,g);
-      float alphaZ = atan2f(inunaz,g);
+    float alphaX = atan2f(inunax,g); //tilt angle
+    float alphaY = atan2f(inunay,g);
+    float alphaZ = atan2f(inunaz,g);
       
-      accelDraw(alphaX,alphaY,alphaZ, xP,yP,zP);
-      xP = alphaX;
-      yP = alphaY;
-      zP = alphaZ;
+    wii(alphaX,alphaY,alphaZ, xP,yP,zP);
+    xP = alphaX;
+    yP = alphaY;
+    zP = alphaZ;
 
-      printf("inunax:%d inunay:%d inunaz%d ",inunax,inunay,inunaz);
+    printf("alphax:%f alphay:%f alphaz%f ",alphaX,alphaY,alphaZ);
       
-      c = nun.c;
+    c = nun.c;
       
-      z = nun.z;
+    z = nun.z;
         
-      if(c||z){
-	f3d_lcd_drawString(0,0,"button is being pressed",BLACK,WHITE);
-	delay(100);
-	drawRect(0,100,0,20,WHITE);
-      }
+    if(c||z){
+      f3d_lcd_drawString(0,0,"button is being pressed",BLACK,WHITE);
+      delay(100);
+      drawRect(0,100,0,20,WHITE);
     }
-    //lab8
+  }
+  //lab8
 
 
 
-  }//closing while 
+}//closing while 
 }//closing main
-
-
 
 #ifdef USE_FULL_ASSERT
 void assert_failed(uint8_t* file, uint32_t line) {

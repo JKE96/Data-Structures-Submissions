@@ -54,7 +54,8 @@
 #define LCD_CS_DEASSERT()  GPIO_SetBits(GPIOB, GPIO_Pin_12)
 
 // Create these macros needed for the SD card interface in the ff9b code
-// #define SD_CS_HIGH() 
+#define SD_CS_HIGH() 1
+#define SD_CS_LOW() 0 
 // #define SD_CS_LOW()  
 
 #define GPIO_PIN_SCE GPIO_Pin_12    

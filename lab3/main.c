@@ -21,7 +21,7 @@
 
 // Simple looping delay function
 void delay(void) {
-  int i = 500000;
+  int i = 2000000;
   while (i-- > 0) {
     asm("nop"); /* This stops it optimising code out */
   }
@@ -37,7 +37,7 @@ int main(void) {
       delay();
       light=8;
     }
-    if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)){
+    if(user_btn_read()){
       //pause
     }
     else{

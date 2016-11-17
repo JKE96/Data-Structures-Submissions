@@ -1,0 +1,5 @@
+Jarod England jkenglan with Zhengjia and Steven
+
+Difficulties: The entire lab was difficult. Was having a problem with the echo and putchar functions.  Some other major difficulties was learning how to initialize everything.
+
+What I learned: I learned that the given line ch = dequeue(&txbuf); was not working and created many problems when solving the lab.  The echo still does not work but once we altered the line and added some information.  We also learned how to make the leds light up using interrupts.
