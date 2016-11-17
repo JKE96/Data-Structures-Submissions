@@ -50,12 +50,7 @@ FATFS Fatfs;		/* File system object */
 FIL fid;		/* File object */
 BYTE Buff[128];		/* File read buffer */
 
-
-char *filnam[] = {"one.bmp","puppy.bmp"};
 int picnum = 0;
-
-
-
 
 typedef struct {
   unsigned char magic [2];
@@ -177,7 +172,13 @@ void drawpicture(){
 
   f_mount(0, &Fatfs); 
   char fname[10];
-  strcpy(fname, "boats.bmp");
+  if(picnum ==0){
+  strcpy(fname,"puppy.bmp");
+  }
+  else{
+  strcpy(fname,"kitten.bmp");
+  }
+
   rc = f_open(&fid, fname, FA_READ);
   if (rc) die(rc);
   readHeaders(); 
@@ -218,7 +219,12 @@ void drawpicture2(){
 
   f_mount(0, &Fatfs); 
   char fname[10];
-  strcpy(fname, filnam[picnum]);
+  if(picnum ==0){
+      strcpy(fname,"puppy.bmp");
+    }
+  else{
+    strcpy(fname,"kitten.bmp");
+  }
   rc = f_open(&fid, fname, FA_READ);
   if (rc) die(rc);
   readHeaders(); 
@@ -252,15 +258,14 @@ int main(void) {
   int a =1;
   float array[3] = {1.1,2.2,3.3};
  
-
+  
   drawpicture();
 
   int c,z,num,numy;
+  nunchuk_t nun;
 
   while(1){
     printf("while loop");
-
-    nunchuk_t nun;
 
     f3d_nunchuk_read(&nun);
     c = nun.c;
@@ -269,14 +274,16 @@ int main(void) {
     numy = nun.jy;
 
     printf("%d",c);
-    if(z==1||num==0||c==1|| num ==255){
+    f3d_gyro_getdata(array);
+    if(z==1||num==0||c==1|| num ==255||user_btn_read()){
       picnum = picnum +1;
       picnum = picnum %2;
+      a = -1;
+      array[1] = -10;
       printf("changing pic num");
     }
-
-    f3d_gyro_getdata(array);
     printf("a is %f\n",array[1]);
+
     if(array[1] < -5 && (a!=0)) {
       printf("one");
       drawpicture();
