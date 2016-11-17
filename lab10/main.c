@@ -29,7 +29,7 @@ queue_t testQ;
     }
   }
 }
-/////////////////
+///////////////// graffiti
 */
 void init() {
     setvbuf(stdin, NULL, _IONBF, 0);
