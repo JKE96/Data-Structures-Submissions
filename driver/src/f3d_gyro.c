@@ -1,37 +1,51 @@
-//This is the gyro.c file. It holds functions necessary to run the gyro on the circuit board 
-//Author: Jarod England        
-// Date Created: Sept. 2016    
-// Last Modified by: Jarod England
-// Date Last Modified: Oct 5. 2016    
-// Assignment: Lab5   
-// Part of: lab5 
-
-
-
-
 #include <f3d_gyro.h>
 #include <stm32f30x.h>
 void f3d_gyro_interface_init() {
+  /**********************************************************************/
+  /************** CODE HERE *********************************************/
+  //You must configure and initialize the following 4 pins
+
+  //SCK PA5 
+  
+  //MOSI PA6 
+  
+  //MISO PA7
+
+  //CS PE3
+
+
+  
+  //set the CS high
+  
+  /**********************************************************************/
+   
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
   GPIO_InitTypeDef GPIO_InitStructure;
 
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE); // SCK, MOSI, MISO on port A
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE); // CS on port E
-
-  // SCK MOSI MISO PA5 PA6 PA7
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource5, GPIO_AF_5);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_5);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource7, GPIO_AF_5);
-
-  // SCK MOSI MISO PA5 PA6 PA7
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOA,&GPIO_InitStructure);
 
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+  GPIO_PinAFConfig(GPIOA,5,GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOA,6,GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOA,7,GPIO_AF_5);
+
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOE,&GPIO_InitStructure);
+
+  GPIO_SetBits(GPIOE, GPIO_Pin_3);
+
   //SPI Initialization and configuration
   SPI_InitTypeDef SPI_InitStructure;
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
@@ -46,42 +60,31 @@ void f3d_gyro_interface_init() {
   SPI_Init(SPI1, &SPI_InitStructure);
   SPI_RxFIFOThresholdConfig(SPI1, SPI_RxFIFOThreshold_QF);
   SPI_Cmd(SPI1, ENABLE);
-
-  // CS PE3
-  GPIO_StructInit(&GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOE, &GPIO_InitStructure);
-
-  // set the CS High
-  GPIO_SetBits(GPIOE, GPIO_Pin_3);
 }
 
 //the init function to be called in your main.c
 void f3d_gyro_init(void) {
   //
-  //SETTING THE CONTROL REGISTERS
+  //SETTING THE CONTROL REGISTERS 
   f3d_gyro_interface_init();
-  // CTRL1 Register
+  // CTRL1 Register 
   // Bit 7:6 Data Rate: Datarate 0
   // Bit 5:4 Bandwidth: Bandwidth 3
   // Bit 3: Power Mode: Active
   // Bit 2:0 Axes Enable: X,Y,Z enabled
   uint8_t ctrl1;
   uint8_t ctrl4;
-
-  ctrl1 |= (uint8_t) (((uint8_t)0x00)|
-		      ((uint8_t)0x30)|
-		      ((uint8_t)0x08)|
+	
+  ctrl1 |= (uint8_t) (((uint8_t)0x00)|		
+		      ((uint8_t)0x30)|		
+		      ((uint8_t)0x08)|		
 		      ((uint8_t)0x07));
-  // CTRL4 Register
+  // CTRL4 Register 
   // Bit 7 Block Update: Continuous */
   // Bit 6 Endianess: LSB first  */
   // Bit 5:4 Full Scale: 500 dps */
-  ctrl4 |= (uint8_t) (((uint8_t)0x00)|
-		      ((uint8_t)0x00)|
+  ctrl4 |= (uint8_t) (((uint8_t)0x00)|			
+		      ((uint8_t)0x00)|				     
 		      ((uint8_t)0x10));
 
   f3d_gyro_write(&ctrl1, 0x20, 1);
@@ -100,7 +103,7 @@ void f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead) {
   //setting chip select to low (LETS TALK!)
   GYRO_CS_LOW();
   //sending address byte
-  f3d_gyro_sendbyte(ReadAddr);
+  f3d_gyro_sendbyte(ReadAddr);  
   while(NumByteToRead > 0x00) {
     //WE are now sending dummy data so we can read the valuable!
     //remember we must write to read!
@@ -115,31 +118,49 @@ void f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead) {
 
 /*writing function*/
 void f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite) {
-  // if multiple
-  if (NumByteToWrite > 0x01){
-    WriteAddr |= (uint8_t) ((uint8_t)0x40);
+  /****************************************************************************/
+  /************** CODE HERE *********************************************/
+
+  //CHECK TO SEE HOW MANY BYTES AND HANDLE THAT CORRECTLY
+
+  //SET THE CS
+
+  //SEND THE FIRST BYTE
+
+  //IF MULTIPLE, SEND THE ADDITIONAL
+
+  /***************************************************************************/
+  if (NumByteToWrite > 1) {
+    WriteAddr |= (uint8_t)(0x80 | 0x40);
+  } else {
+    WriteAddr |= (uint8_t)(0x40);
   }
-  // set the CS
+
   GYRO_CS_LOW();
-  // Send the first byte
+
   f3d_gyro_sendbyte(WriteAddr);
-  // send the rest of the bytes
-  while (NumByteToWrite >= 0x01){
+  while (NumByteToWrite > 0x00) {
     f3d_gyro_sendbyte(*pBuffer);
     NumByteToWrite--;
     pBuffer++;
   }
+
   GYRO_CS_HIGH();
 }
 
 /*sends the bytes*/
 static uint8_t f3d_gyro_sendbyte(uint8_t byte) {
-  // Confrim TX is free
+  /*********************************************************/
+  /***********************CODE HERE ************************/
+
   while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
   SPI_SendData8(SPI1, byte);
-  // Confirm RX is free
+
   while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
   return (uint8_t)SPI_ReceiveData8(SPI1);
+
+  /********************** CODE HERE ************************/
+  /*********************************************************/
 }
 /*gets the data*/
 void f3d_gyro_getdata(float *pfData) {

@@ -55,11 +55,10 @@ typedef struct queue {
 
 void init_queue(queue_t *);
 int enqueue(queue_t *, int);
-int dequeue(queue_t *, int *data);            
-int queue_empty(queue_t *);           
+int dequeue(queue_t *);            
+int queue_empty(queue_t *);            
 
-static queue_t rxbuf;
 static queue_t txbuf;
-
+static queue_t rxbuf;
 
 /* queue.h ends here */

@@ -65,50 +65,62 @@ void die (FRESULT rc) {
 }
 
 int init(){
-    setvbuf(stdin, NULL, _IONBF, 0);
-    setvbuf(stdout, NULL, _IONBF, 0);
-    setvbuf(stderr, NULL, _IONBF, 0);
-    f3d_uart_init();
-    f3d_led_init();
-    f3d_user_btn_init();
-    f3d_systick_init();
+
     return 0;
 }
 
 
+void drawRect(int x1, int x2, int y1, int y2, uint16_t color){
+  int i;
+  int j;
+  if(x1 > x2){
+    int temp = x1;
+    x1 = x2;
+    x2 = temp;
+  }
+  if(y1>y2){
+    int tem = y1;
+    y1 = y2;
+    y2 = tem;
+  }
+  if (y1 > 75 && y2 > 75) {
+    for(j= y2; j>= y1; j--){ 
+      for (i = x1; i<=x2; i++){
+	f3d_lcd_drawPixel(i,j,color);
+      }
+    }
+  }
+  for(j= y1; j<= y2; j++){ 
+    for (i = x1; i<=x2; i++){
+      f3d_lcd_drawPixel(i,j,color);
+    }
+  }
+}
 
-int main(void) { 
-  FRESULT rc;			/* Result code */
-  DIR dir;			/* Directory object */
-  FILINFO fno;			/* File information object */
-  UINT bw, br;
-  unsigned int retval;
-  int bytesread;
+FRESULT rc;			/* Result code */
+DIR dir;			/* Directory object */
+FILINFO fno;			/* File information object */
+UINT bw, br;
+unsigned int retval;
+int bytesread;
 
-  setvbuf(stdin, NULL, _IONBF, 0);
-  setvbuf(stdout, NULL, _IONBF, 0);
-  setvbuf(stderr, NULL, _IONBF, 0);
+void play(int soundNum) {
 
-  f3d_uart_init();
-  f3d_timer2_init();
-  f3d_dac_init();
-  f3d_delay_init();
-  f3d_rtc_init();
-  f3d_systick_init();
-
-  f3d_lcd_init();
-  delay(10);
-  f3d_i2c1_init();
-  delay(10);
-  f3d_nunchuk_init();
-  delay(10);
-
-  printf("Reset\n");
   
-  f_mount(0, &Fatfs);/* Register volume work area */
 
+  f_mount(0, &Fatfs);/* Register volume work area */
   printf("\nOpen thermo.wav\n");
-  rc = f_open(&fid, "thermo.wav", FA_READ);
+  
+  if (soundNum = 0) {
+      rc = f_open(&fid, "thermo.wav", FA_READ);
+  }
+  else if (soundNum = 1) {
+      rc = f_open(&fid, "thermo.wav", FA_READ); 
+   } 
+  else { 
+      rc = f_open(&fid, "thermo.wav", FA_READ);
+    }
+
   
   if (!rc) {
     struct ckhd hd;
@@ -138,7 +150,7 @@ int main(void) {
     printf("data rate %d\n", fck.nAvgBytesPerSec);
     printf("block alignment %d\n", fck.nBlockAlign);
     printf("bits per sample %d\n", fck.wBitsPerSample);
-    
+    printf("soundNum is %d\n", soundNum); 
     // now skip all non-data chunks !
     
     while(1){
@@ -181,8 +193,8 @@ int main(void) {
   rc = f_close(&fid);
   
   if (rc) die(rc);
-  while (1);
 }
+  
     /*
     // Draw some fancy stuff to select audio files
     while(1) {
@@ -211,6 +223,90 @@ int main(void) {
       }
     }
 */
+
+
+
+
+int main(void) { 
+
+  setvbuf(stdin, NULL, _IONBF, 0);
+  setvbuf(stdout, NULL, _IONBF, 0);
+  setvbuf(stderr, NULL, _IONBF, 0);
+
+  f3d_uart_init();
+  f3d_timer2_init();
+  f3d_dac_init();
+  f3d_delay_init();
+  f3d_rtc_init();
+  f3d_systick_init();
+
+  f3d_lcd_init();
+  delay(10);
+  f3d_i2c1_init();
+  delay(10);
+  f3d_nunchuk_init();
+  delay(10);
+
+
+  //  printf("Reset\n");
+  f3d_lcd_fillScreen(WHITE);
+
+  f3d_lcd_drawString(20,0,"thermo.wav",BLACK,WHITE);
+  f3d_lcd_drawString(20,20, "two.wav",BLACK,WHITE);
+  f3d_lcd_drawString(20,40,"three.wav", BLACK,WHITE);
+  drawRect(5, 15, 1,7, BLUE);
+  
+  //printf("banana");
+  nunchuk_t nun;
+
+  int soundNum =0;
+  int yNumOne = 1;
+  int yNumTwo = 7;
+  char sound[10];
+  while(1){
+    f3d_nunchuk_read(&nun);
+    int num = nun.jy; //goes from 0 - 255
+    printf("%d\n", num);
+
+
+    if(num > 240 && soundNum ==0){
+       soundNum=2;
+       drawRect(5, 15, yNumOne,yNumTwo, WHITE);
+       yNumOne = 41;
+       yNumTwo = 47;
+       drawRect(5, 15, yNumOne,yNumTwo, BLUE);
+    }
+    else if (num < 15 && soundNum ==2){
+      soundNum = 0;
+      drawRect(5, 15, yNumOne,yNumTwo, WHITE);
+      yNumOne= 1;
+      yNumTwo=7;
+      drawRect(5, 15, yNumOne,yNumTwo, BLUE);
+    }
+    else if(num > 240){
+      --soundNum;
+      drawRect(5, 15, yNumOne,yNumTwo, WHITE);
+      yNumOne = yNumOne - 20;
+      yNumTwo -= 20;
+      drawRect(5, 15, yNumOne,yNumTwo, BLUE);
+    }
+
+    else if(num < 15){
+      ++soundNum;
+      drawRect(5, 15, yNumOne,yNumTwo, WHITE);
+      yNumOne+= 20;
+      yNumTwo+=20;
+      drawRect(5, 15, yNumOne,yNumTwo, BLUE);
+    }
+    else {
+    }
+
+     play(soundNum);
+    printf("soundNum is %d\n", soundNum);
+    delay(1000);
+  }
+  while(1);
+}
 
 
 

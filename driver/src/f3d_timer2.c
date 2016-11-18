@@ -64,6 +64,8 @@ void f3d_timer2_setperiod(uint16_t period) {
    TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 }
 
+//Lab 11 timer enable and disable
+
 void f3d_timer2_enable(uint32_t samplerate) {
    static TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
    uint32_t period;

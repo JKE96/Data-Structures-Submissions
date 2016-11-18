@@ -40,41 +40,34 @@
 void f3d_i2c1_init() {
 
 // I2C GPIO Initialization and Alternate Function Selection
-  /******************vvvvvvvvvvvvvYOUR CODE GOES HEREvvvvvvvvvvvvvv***********************/
-   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-   //Initialize AF PINS
-    GPIO_InitTypeDef GPIO_InitStructure;
-  
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+
+  GPIO_InitTypeDef GPIO_InitStructure;
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF_4);
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_4);
-  
+  GPIO_PinAFConfig(GPIOB,6,GPIO_AF_4);
+  GPIO_PinAFConfig(GPIOB,7,GPIO_AF_4);
 
+// Section 4.0 I2C Configuration
+  I2C_InitTypeDef  I2C_InitStructure;
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1,ENABLE);  // Enable the clock to the I2C peripheral
 
+  I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+  I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
+  I2C_InitStructure.I2C_DigitalFilter = 0x00;
+  I2C_InitStructure.I2C_OwnAddress1 = 0x00;
+  I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+  I2C_InitStructure.I2C_Timing = 0x00902025;
+  I2C_Init(I2C1, &I2C_InitStructure);
 
-  /******************^^^^^^^^^^^^^YOUR CODE GOES HERE^^^^^^^^^^^^^^**********************/
-
-// Section 4.0 I2C Configuration	
-I2C_InitTypeDef  I2C_InitStructure;
-RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1,ENABLE);  // Enable the clock to the I2C peripheral 
-
-I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
-I2C_InitStructure.I2C_DigitalFilter = 0x00;
-I2C_InitStructure.I2C_OwnAddress1 = 0x00;
-I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-I2C_InitStructure.I2C_Timing = 0x00902025;
-I2C_Init(I2C1, &I2C_InitStructure);
-
-I2C_Cmd(I2C1, ENABLE);
+  I2C_Cmd(I2C1, ENABLE);
 
 }
 

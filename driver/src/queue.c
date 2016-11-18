@@ -1,42 +1,42 @@
-/* queue.c --- 
- * 
+/* queue.c ---
+ *
  * Filename: queue.c
- * Description: 
+ * Description:
  * Author: Bryce Himebaugh
- * Maintainer: 
+ * Maintainer:
  * Created: Thu Feb  7 19:49:26 2013 (-0500)
- * Version: 
- * Last-Updated: 
- *           By: 
+ * Version:
+ * Last-Updated:
+ *           By:
  *     Update #: 0
- * URL: 
- * Doc URL: 
- * Keywords: 
- * Compatibility: 
- * 
+ * URL:
+ * Doc URL:
+ * Keywords:
+ * Compatibility:
+ *
  */
 
-/* Commentary: 
- * 
- * 
- * 
+/* Commentary:
+ *
+ *
+ *
  */
 
 /* Change Log:
- * 
- * 
+ *
+ *
  */
 
 /* This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth
@@ -45,44 +45,47 @@
 
 /* Code: */
 
-#include <queue.h>
-#include <stm32f30x_misc.h>
+#include "queue.h"
 
 void init_queue(queue_t *buf) {
+  // init head and tail to be diff so we don't
+  // think it's full
   buf->head = 1;
   buf->tail = 0;
+
+  // zero this shit out
   int i;
-  for (i= 0; i < QUEUE_SIZE; i++){
+  for (i = 0; i < QUEUE_SIZE; i++) {
     buf->buffer[i] = 0;
   }
 }
 
-
-
-int queue_full(queue_t *buf) {
-  return (((buf->tail + 1) % QUEUE_SIZE) == buf->head);
+int enqueue (queue_t *buf, int data) {
+  if (buf->head == buf->tail) return 0; // queue full
+  buf->buffer[buf->tail] = data;
+  if (!buf->tail) buf->head = 0;
+  buf->tail = (buf->tail + 1) % QUEUE_SIZE;
+  return 1;
 }
 
 int queue_empty(queue_t *buf) {
-  return (buf->head == buf->tail);
-}
-
-int enqueue (queue_t *buf, int data) {
-  if (queue_full(buf)) {
-    return 0;
-  } else {
-    buf->buffer[buf->head] = data;
-    buf->head = ((buf->head + 1) == QUEUE_SIZE) ? 0: buf-> head +1;	
+  int i;
+  for (i = 0; i < QUEUE_SIZE; i++) {
+    if (buf->buffer[i]) return 0;
   }
+
+  buf->head = 1;
+  buf->tail = 0;
   return 1;
 }
 
-int dequeue (queue_t *buf, int *data) {
-  if(queue_empty(buf)){
-    return 0;
-  } else {
-    *data = buf->buffer[buf->tail];
-    buf->tail = ((buf->tail + 1) ==  QUEUE_SIZE) ? 0: buf->tail + 1;
-  }
-  return 1;
+int dequeue (queue_t *buf) {
+  int ret;
+  if (queue_empty(buf)) return 0;
+  ret = buf->buffer[buf->head];
+  buf->buffer[buf->head] = 0;
+  buf->head = (buf->head + 1) % QUEUE_SIZE;
+  return ret;
 }
+
+/* queue.c ends here */
