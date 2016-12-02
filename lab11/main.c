@@ -17,7 +17,7 @@
 #include <string.h>
 #include <f3d_user_btn.h>
 
-#define TIMER 20000
+#define TIMER 1000
 #define AUDIOBUFSIZE 128
 
 FATFS Fatfs;        /* File system object */
@@ -97,6 +97,7 @@ void drawRect(int x1, int x2, int y1, int y2, uint16_t color){
   }
 }
 
+
 FRESULT rc;			/* Result code */
 DIR dir;			/* Directory object */
 FILINFO fno;			/* File information object */
@@ -104,22 +105,21 @@ UINT bw, br;
 unsigned int retval;
 int bytesread;
 
-void play(int soundNum) {
-
+int play(int sound) {
   
 
   f_mount(0, &Fatfs);/* Register volume work area */
   printf("\nOpen thermo.wav\n");
   
-  if (soundNum = 0) {
+ if (sound = 0) {
       rc = f_open(&fid, "thermo.wav", FA_READ);
-  }
-  else if (soundNum = 1) {
-      rc = f_open(&fid, "thermo.wav", FA_READ); 
+      }
+ else if (sound = 1) {
+      rc = f_open(&fid, "batman.wav", FA_READ); 
    } 
   else { 
-      rc = f_open(&fid, "thermo.wav", FA_READ);
-    }
+      rc = f_open(&fid, "blow.wav", FA_READ);
+      }
 
   
   if (!rc) {
@@ -150,7 +150,7 @@ void play(int soundNum) {
     printf("data rate %d\n", fck.nAvgBytesPerSec);
     printf("block alignment %d\n", fck.nBlockAlign);
     printf("bits per sample %d\n", fck.wBitsPerSample);
-    printf("soundNum is %d\n", soundNum); 
+    printf("sound is %d\n", sound); 
     // now skip all non-data chunks !
     
     while(1){
@@ -258,33 +258,36 @@ int main(void) {
   
   //printf("banana");
   nunchuk_t nun;
+  int sound = 0;
 
-  int soundNum =0;
+
+  int* soundNum = &sound;
   int yNumOne = 1;
   int yNumTwo = 7;
-  char sound[10];
   while(1){
     f3d_nunchuk_read(&nun);
-    int num = nun.jy; //goes from 0 - 255
+    int num = nun.jy;
+    int c = nun.c;
+    int z = nun.z;
     printf("%d\n", num);
 
 
-    if(num > 240 && soundNum ==0){
-       soundNum=2;
+    if(num > 240 && sound == 0){
+       sound = 2;
        drawRect(5, 15, yNumOne,yNumTwo, WHITE);
        yNumOne = 41;
        yNumTwo = 47;
        drawRect(5, 15, yNumOne,yNumTwo, BLUE);
     }
-    else if (num < 15 && soundNum ==2){
-      soundNum = 0;
+    else if (num < 15 && sound == 2){
+      sound = 0;
       drawRect(5, 15, yNumOne,yNumTwo, WHITE);
       yNumOne= 1;
       yNumTwo=7;
       drawRect(5, 15, yNumOne,yNumTwo, BLUE);
     }
     else if(num > 240){
-      --soundNum;
+      sound = sound - 1;
       drawRect(5, 15, yNumOne,yNumTwo, WHITE);
       yNumOne = yNumOne - 20;
       yNumTwo -= 20;
@@ -292,7 +295,7 @@ int main(void) {
     }
 
     else if(num < 15){
-      ++soundNum;
+      sound = sound + 1;
       drawRect(5, 15, yNumOne,yNumTwo, WHITE);
       yNumOne+= 20;
       yNumTwo+=20;
@@ -301,11 +304,12 @@ int main(void) {
     else {
     }
 
-     play(soundNum);
-    printf("soundNum is %d\n", soundNum);
-    delay(1000);
+      if (c || z) {
+       play(*soundNum); 
+      
+       printf("soundNum is %d\n", sound);
+      }
   }
-  while(1);
 }
 
 
