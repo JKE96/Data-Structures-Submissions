@@ -173,10 +173,10 @@ void drawpicture(){
   f_mount(0, &Fatfs); 
   char fname[10];
   if(picnum ==0){
-  strcpy(fname,"puppy.bmp");
+  strcpy(fname,"player.bmp");
   }
   else{
-  strcpy(fname,"kitten.bmp");
+  strcpy(fname,"player.bmp");
   }
 
   rc = f_open(&fid, fname, FA_READ);
