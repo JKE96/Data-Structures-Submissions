@@ -1,0 +1,28 @@
+Patrick Gibbons | pgibbons
+Partner: Clayton Tow
+
+1. We are creating macros that signal to set the CS pin for the SD card to high and low. A high signal means
+   we are going to begin transmitting data and a low signal means we are finished transmitting data.
+
+2. You could call f3d_delay_uS in place of that loop and pass it count. I believe this would use less resources
+   from the system.
+
+3. DMA allows for much faster rates on transfer, specifically of pixel transfer rates for the LCD screen.
+   Using DMA in this lab would allow the screen to print the pictures much faster. 
+
+4. The file allocation table works kind of like a linked list. A file is stored in seperate pieces, called clusters,
+   and each cluster points to the next one until the end of the file is reached. If a single part of the file, or one
+   cluster, becomes corrupted, it can no longer point to the next cluster. Thus, if even a single cluster is lost,
+   every cluster that comes after cannot be reached, and therefore that part of the file is gone.
+
+5. FAT16 is the original design and is used for smaller partitions. 
+   FAT32 was developed later on for Windows 95 and supports larger partitions and better storage efficiency. It also
+   uses more bits to address clusters and the clusters are smaller.
+
+We initially had a lot of problems just trying to understand how to read the data from the .BMP files into
+a buffer where we could then access the pixel data. We understood the concept of the header, but had no idea how
+to read up to the end of the header so we could start at the pixel data. Eventually, and with a lot of help, we
+got it to read through the header and then read the pixel data, one row at a time. Next came the bit-shifting, which
+we also had help with and looked up the pixel structure online. This was kind of trial and error but it worked after
+a bit. After we got the functionality of reading the file to work, it wasn't hard to build the application. There
+were some random errors that popped up from time to time but these were fixed with restarts.
