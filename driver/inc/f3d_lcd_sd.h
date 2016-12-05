@@ -34,6 +34,7 @@
 
 /* Code: */
 #include <stm32f30x.h>
+#include <stdint.h>
 
 #define SPI_SLOW (uint16_t) SPI_BaudRatePrescaler_64
 #define SPI_MEDIUM (uint16_t) SPI_BaudRatePrescaler_8
@@ -54,8 +55,8 @@
 #define LCD_CS_DEASSERT()  GPIO_SetBits(GPIOB, GPIO_Pin_12)
 
 // Create these macros needed for the SD card interface in the ff9b code
+#define SD_CS_LOW() GPIO_ResetBits(GPIOB, GPIO_Pin_8)
 #define SD_CS_HIGH() GPIO_SetBits(GPIOB, GPIO_Pin_8)
-#define SD_CS_LOW()  GPIO_ResetBits(GPIOB, GPIO_Pin_8)
 
 #define GPIO_PIN_SCE GPIO_Pin_12    
 
@@ -100,14 +101,41 @@ void f3d_lcd_fillScreen(uint16_t);
 void f3d_lcd_drawPixel(uint8_t, uint8_t, uint16_t);
 void f3d_lcd_drawChar(uint8_t, uint8_t, unsigned char, uint16_t, uint16_t);
 void f3d_lcd_drawString(uint8_t, uint8_t, char *, uint16_t, uint16_t);
-static int xchng_datablock(SPI_TypeDef *SPIx, int half, const void *tbuf, void *rbuf, int count);
-int spiReadWrite(SPI_TypeDef *SPIx,uint8_t *rbuf,const uint8_t *tbuf, int cnt, uint16_t speed);
-int spiReadWrite16(SPI_TypeDef *SPIx,uint16_t *rbuf,const uint16_t *tbuf, int cnt,  uint16_t speed);
+
+int spiReadWrite(SPI_TypeDef *SPIx, uint8_t *rbuf, const uint8_t *tbuf, int cnt, uint16_t speed);
+int spiReadWrite16(SPI_TypeDef *SPIx, uint16_t *rbuf, const uint16_t *tbuf, int cnt, uint16_t speed);
 static void LcdWrite(char dc,const char *data,int nbytes);
 static void LcdWrite16(char dc,const uint16_t *data,int cnt);
-
+static int xchng_datablock(SPI_TypeDef *SPIx, int half, const void *tbuf, void *rbuf, unsigned count);
 /* void f3d_sdcard_readwrite(uint8_t *, uint8_t *, int); */
 
+struct bmpfile_magic {
+  unsigned char magic[2];
+};
+struct bmpfile_header {
+  uint32_t filesz;
+  uint16_t creator1;
+  uint16_t creator2;
+  uint32_t bmp_offset;
+};
+typedef struct {
+  uint32_t header_sz;
+  int32_t width;
+  int32_t height;
+  uint16_t nplanes;
+  uint16_t bitspp;
+  uint32_t compress_type;
+  uint32_t bmp_bytesz;
+  int32_t hres;
+  int32_t vres;
+  uint32_t ncolors;
+  uint32_t nimpcolors;
+} BITMAPINFOHEADER;
+struct bmppixel { // little endian byte order
+  uint8_t b;
+  uint8_t g;
+  uint8_t r;
+};
 
 /* f3d_lcd_sd.h ends here */
 

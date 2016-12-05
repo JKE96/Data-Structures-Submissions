@@ -45,7 +45,6 @@
 
 void f3d_dac_init(void);
 void f3d_dac_channel_setup(void);
-void DMA2_Channel4_5_IRQHandler(void);
 void audioplayerStart(void);
 void audioplayerStop(void);
 

@@ -1,0 +1,5 @@
+Clayton Tow/cctow
+Patrick Gibbons/pgibbons
+
+
+We encountered some problems with much of the code throughout the lab. The structure and function definitions were not consistent with how they were used, such as a function declaration declaring only one paramater, but then passing two paramaters to it. I learned how to create applications based on interrupts rather than polling. We modified the structure and some of the files that were given to us, but after that we were able to successfully get the interrupts working. The lights were not very difficult once we got the latter part of the lab done.

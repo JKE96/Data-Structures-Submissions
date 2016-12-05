@@ -1,0 +1,20 @@
+Clayton Tow/cctow
+Patrick Gibbons/pgibbons
+
+
+QUESTIONS:
+
+1. The peripheral base address points to the address of the DMA controller. You must initialize the DMA_InitStructure to point to this address before you can use it. 
+
+2. It is necessary to do this so the DMA can increment through the memory without disturbing the CPU. This allows the DMA to do the work on its own. It will increment through the memory as the transfer is taking place.
+
+3. This ensures the buffer is reset before the DMA continues.
+
+4. These functions are designed to optimize transfers of large data sets. Transfers of less than 4 bytes will not be optimized with these functions.
+
+5. This ensures that the audio player is not trying to read the buffer section as the DMA controller is writing to it at the same time. The DMA controller will signal the audio player when the transfer of that portion is complete.
+
+
+We had some trouble getting the files to play "out of the box" with the program. Once we made a few adjustments to the drivers and running gdb to find the problem, we also added a delay as DMA transfers were too quick, and the audioplayer would not play the files.
+
+I learned how to use DMA to my advantage to send large pieces of data over the bus. I also got the chance to learn how to communicate and play with audio files. 

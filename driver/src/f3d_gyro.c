@@ -1,51 +1,45 @@
+/***********************
+File: f3d_gyro.c
+Gyro functions: init, read, write, sendbyte, getdata
+Author: Geoffrey Brown
+Created: ?
+Modified: 09/28/16
+Modified by: Patrick Gibbons (no partner)
+Assignment: Lab 5
+Part of: Angular Velocity Visualization Application
+************************/
+
 #include <f3d_gyro.h>
 #include <stm32f30x.h>
 void f3d_gyro_interface_init() {
-  /**********************************************************************/
-  /************** CODE HERE *********************************************/
-  //You must configure and initialize the following 4 pins
-
-  //SCK PA5 
-  
-  //MOSI PA6 
-  
-  //MISO PA7
-
-  //CS PE3
-
-
-  
-  //set the CS high
-  
-  /**********************************************************************/
-   
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
   GPIO_InitTypeDef GPIO_InitStructure;
-
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
   GPIO_StructInit(&GPIO_InitStructure);
+
+  //SCK, MOSI, MISO
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOA,&GPIO_InitStructure);
-
-  GPIO_PinAFConfig(GPIOA,5,GPIO_AF_5);
-  GPIO_PinAFConfig(GPIOA,6,GPIO_AF_5);
-  GPIO_PinAFConfig(GPIOA,7,GPIO_AF_5);
-
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+  
+  //CS
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOE, ENABLE);
   GPIO_StructInit(&GPIO_InitStructure);
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOE,&GPIO_InitStructure);
+  GPIO_Init(GPIOE, &GPIO_InitStructure);
 
+  GPIO_PinAFConfig(GPIOA, 5, GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOA, 6, GPIO_AF_5);
+  GPIO_PinAFConfig(GPIOA, 7, GPIO_AF_5);
   GPIO_SetBits(GPIOE, GPIO_Pin_3);
-
+   
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
   //SPI Initialization and configuration
   SPI_InitTypeDef SPI_InitStructure;
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
@@ -118,50 +112,31 @@ void f3d_gyro_read(uint8_t* pBuffer, uint8_t ReadAddr, uint16_t NumByteToRead) {
 
 /*writing function*/
 void f3d_gyro_write(uint8_t* pBuffer, uint8_t WriteAddr, uint16_t NumByteToWrite) {
-  /****************************************************************************/
-  /************** CODE HERE *********************************************/
-
-  //CHECK TO SEE HOW MANY BYTES AND HANDLE THAT CORRECTLY
-
-  //SET THE CS
-
-  //SEND THE FIRST BYTE
-
-  //IF MULTIPLE, SEND THE ADDITIONAL
-
-  /***************************************************************************/
   if (NumByteToWrite > 1) {
     WriteAddr |= (uint8_t)(0x80 | 0x40);
-  } else {
-    WriteAddr |= (uint8_t)(0x40);
   }
-
+  else {
+    WriteAddr |= (uint8_t)(0x80);
+  }
   GYRO_CS_LOW();
-
   f3d_gyro_sendbyte(WriteAddr);
-  while (NumByteToWrite > 0x00) {
+  while(NumByteToWrite > 0x00) {
     f3d_gyro_sendbyte(*pBuffer);
     NumByteToWrite--;
     pBuffer++;
   }
-
   GYRO_CS_HIGH();
 }
 
 /*sends the bytes*/
 static uint8_t f3d_gyro_sendbyte(uint8_t byte) {
-  /*********************************************************/
-  /***********************CODE HERE ************************/
-
-  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
+  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET); 
   SPI_SendData8(SPI1, byte);
 
   while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
   return (uint8_t)SPI_ReceiveData8(SPI1);
-
-  /********************** CODE HERE ************************/
-  /*********************************************************/
 }
+
 /*gets the data*/
 void f3d_gyro_getdata(float *pfData) {
   //

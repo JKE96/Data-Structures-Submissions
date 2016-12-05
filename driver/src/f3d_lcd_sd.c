@@ -40,40 +40,32 @@
 static uint8_t madctlcurrent = MADVAL(MADCTLGRAPHICS);
 
 void f3d_lcd_sd_interface_init(void) {
-  //lab 11 initialize the DMA clock
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
  /* vvvvvvvvvvv pin initialization for the LCD goes here vvvvvvvvvv*/ 
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-
   GPIO_InitTypeDef GPIO_InitStructure;
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
   GPIO_StructInit(&GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+  GPIO_Init(GPIOB,&GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
   GPIO_PinAFConfig(GPIOB,13,GPIO_AF_5);
   GPIO_PinAFConfig(GPIOB,14,GPIO_AF_5);
   GPIO_PinAFConfig(GPIOB,15,GPIO_AF_5);
-
+  
+  GPIO_Init(GPIOB,&GPIO_InitStructure);
+  
+  
   /* ^^^^^^^^^^^ pin initialization for the LCD goes here ^^^^^^^^^^ */
  
   // Section 4.1 SPI2 configuration
@@ -195,68 +187,28 @@ static void LcdWrite16(char dc,const uint16_t *data,int cnt) {
   GPIO_SetBits(LCD_PORT,GPIO_PIN_SCE);
 }
 
-int spiReadWrite(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint8_t *tbuf, int cnt, uint16_t speed) {
+int spiReadWrite(SPI_TypeDef *SPIx, uint8_t *rbuf, const uint8_t *tbuf, int cnt, uint16_t speed) {
   int i;
-  int timeout;
-
-  SPIx->CR1 = (SPIx->CR1&~SPI_BaudRatePrescaler_256)|speed;
+  SPIx->CR1 = (SPIx->CR1 & ~SPI_BaudRatePrescaler_256) | speed;
+  
   if ((cnt > 4) && !(cnt & 1)) {
     return xchng_datablock(SPIx, 0, tbuf, rbuf , cnt);
   }
   else {
-
-  for (i = 0; i < cnt; i++){
-    //if (tbuf) {
-      SPI_SendData8(SPIx,tbuf ? *tbuf++: 0xff);
-    //} 
-    //else {
-    //  SPI_SendData8(SPIx,0xff);
-    //}
-    //timeout = 100;
-      while (SPI_I2S_GetFlagStatus(SPIx,SPI_I2S_FLAG_RXNE) == RESET);
+    for (i = 0; i < cnt; i++){
+      SPI_SendData8(SPIx, tbuf ? *tbuf++ : 0xff);
+      while (SPI_I2S_GetFlagStatus(SPIx, SPI_I2S_FLAG_RXNE) == RESET);
       if (rbuf) {
-      *rbuf++ = SPI_ReceiveData8(SPIx);
-      } 
-      else {
-        SPI_ReceiveData8(SPIx);
+    *rbuf++ = SPI_ReceiveData8(SPIx);
+      } else  {
+    SPI_ReceiveData8(SPIx);
       }
     }
-  return i;
+    return i;
   }
 }
 
-
-/*int spiReadWrite16(SPI_TypeDef *SPIx,uint8_t *rbuf, const uint16_t *tbuf, int cnt, uint16_t speed) {
-  int i;
-  
-  SPIx->CR1 = (SPIx->CR1&~SPI_BaudRatePrescaler_256)|speed;
-  SPI_DataSizeConfig(SPIx, SPI_DataSize_16b);
-
-  for (i = 0; i < cnt; i++){
-    if (tbuf) {
-      //      printf("data=0x%4x\n\r",*tbuf);
-      SPI_I2S_SendData16(SPIx,*tbuf++);
-    } 
-    else {
-      SPI_I2S_SendData16(SPIx,0xffff);
-    }
-    while (SPI_I2S_GetFlagStatus(SPIx,SPI_I2S_FLAG_RXNE) == RESET);
-    if (rbuf) {
-      *rbuf++ = SPI_I2S_ReceiveData16(SPIx);
-    } 
-    else {
-      SPI_I2S_ReceiveData16(SPIx);
-    }
-  }
-  SPI_DataSizeConfig(SPIx, SPI_DataSize_8b);
-
-  return i;
-}*/
-
-//Lab 11 spiReadWrite16
-
-int spiReadWrite16(SPI_TypeDef *SPIx, uint16_t *rbuf, 
-           const uint16_t *tbuf, int cnt, uint16_t speed) {
+int spiReadWrite16(SPI_TypeDef *SPIx, uint16_t *rbuf, const uint16_t *tbuf, int cnt, uint16_t speed) {
   int i;
   SPIx->CR1 = (SPIx->CR1 & ~SPI_BaudRatePrescaler_256) | speed;
   SPI_DataSizeConfig(SPIx, SPI_DataSize_16b);
@@ -302,7 +254,8 @@ static void f3d_lcd_writeCmd(uint8_t c) {
   LcdWrite(LCD_C,&c,1);
 }
 
-/*void f3d_lcd_fillScreen(uint16_t color) {
+/*  courtesy of bbmerric */
+void f3d_lcd_fillScreen(uint16_t color) {
   uint8_t y;
   uint16_t x[ST7735_width];
   for (y = 0; y < ST7735_width; y++) x[y] = color;
@@ -310,11 +263,9 @@ static void f3d_lcd_writeCmd(uint8_t c) {
   for (y=0;y<ST7735_height; y++) {
     f3d_lcd_pushColor(x,ST7735_width);
   }
-}*/
+}
 
-//Lab 11 f3d_lcd_fillScreen
-
-void f3d_lcd_fillScreen(uint16_t color) {
+void f3d_lcd_fillScreen2(uint16_t color) {
   uint8_t y;
   uint16_t x[ST7735_width];
   for (y = 0; y < ST7735_width; y++) x[y] = color;
@@ -359,9 +310,7 @@ void f3d_lcd_drawString(uint8_t x, uint8_t y, char *c, uint16_t color, uint16_t 
   }
 }
 
-/* Lab 11 exchange datablock function*/
-
-static int xchng_datablock(SPI_TypeDef *SPIx, int half, const void *tbuf, void *rbuf, int count) {
+static int xchng_datablock(SPI_TypeDef *SPIx, int half, const void *tbuf, void *rbuf, unsigned count) {
   DMA_InitTypeDef DMA_InitStructure;
   uint16_t dummy[] = {0xffff};
   
@@ -430,10 +379,10 @@ static int xchng_datablock(SPI_TypeDef *SPIx, int half, const void *tbuf, void *
   DMA_Cmd(txChan, ENABLE);
 
   // Enable SPI TX/RX request
-    SPI_I2S_DMACmd(SPIx, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, ENABLE);
+  SPI_I2S_DMACmd(SPIx, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, ENABLE);
 
   // Wait for completion
-    while (DMA_GetFlagStatus(dmaflag) == RESET) { ; }
+  while (DMA_GetFlagStatus(dmaflag) == RESET) { ; }
   
   // Disable channels
   DMA_Cmd(rxChan, DISABLE);
@@ -441,9 +390,5 @@ static int xchng_datablock(SPI_TypeDef *SPIx, int half, const void *tbuf, void *
   SPI_I2S_DMACmd(SPIx, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, DISABLE);
   return count;
 }
-
-
-
-
 
 /* f3d_lcd_sd.c ends here */
