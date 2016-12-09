@@ -132,11 +132,6 @@ int play(char *name) {
 }
 
 
-
-
-
-
-
 int prevY =0;
 
 int level=0;
@@ -208,7 +203,21 @@ void levelDisplay(){
   sprintf(strr,"%d",time);
   f3d_lcd_drawString(0,130, "Your time is: ", BLUE, WHITE);
   f3d_lcd_drawString(0,140, strr, BLUE, WHITE);
+}
 
+void coinDisplay(){
+  if(!zOne.alive){
+    f3d_led_on(0);
+    f3d_led_on(1);
+  }
+  if(!zTwo.alive){
+    f3d_led_on(2);
+    f3d_led_on(3);
+  }
+  if(!zThree.alive){
+    f3d_led_on(4);
+    f3d_led_on(5);
+  }
 }
 
 
@@ -262,28 +271,28 @@ void initMapTwo(){
   plyr.xvel = 0;
   plyr.yvel=0;
 
-  obOne.x1 = randomy(40,80);
-  obOne.x2 = randomy(obOne.x1+1,100);
+  obOne.x1 = randomy(20,70);
+  obOne.x2 = randomy(obOne.x1+20,100);
   obOne.y1= randomy(0,20);
-  obOne.y2=randomy(obOne.y1+1,30);
+  obOne.y2=randomy(obOne.y1+5,30);
 
-  zOne.x = randomy(1,30);
-  zOne.y = randomy(1,30);
+  zOne.x = randomy(obOne.x1-10,obOne.x1-6);
+  zOne.y = randomy(10,30);
   zOne.alive=1;
 
   zTwo.x=randomy(obOne.x1+1,obOne.x1+10);
-  zTwo.y=randomy(obOne.y2+1,50);
+  zTwo.y=randomy(obOne.y2+5,50);
   zTwo.alive=1;
 
-  zThree.x=randomy(obOne.x2-5,obOne.x2+5);
-  zThree.y=randomy(obOne.y2+1,50);
+  zThree.x=randomy(obOne.x2,obOne.x2+5);
+  zThree.y=randomy(obOne.y2+5,50);
   zThree.alive=1;
 
-
-  monOne.x1=0;
-  monOne.x2=5;
+  int size = randomy(5,15);
+  monOne.x1=randomy(80,140);
+  monOne.x2=monOne.x1+ size;
   monOne.y1=100;
-  monOne.y2=105;
+  monOne.y2=monOne.y1+size;
   monOne.alive=1;
 }
 
@@ -311,6 +320,7 @@ void createMapTwo(){
   drawMonsterOne();
   drawDoor();
   drawPlayer();
+  drawLife();
 }
 
 void jump(){
@@ -386,22 +396,65 @@ void drawLife(){
 }
 
 int checkDie(){
-  if(hitObject(monOne.x1,monOne.x2,monOne.y1,monOne.y2)){
-      return 1;
-    }
-    return 0;
-}
-  
-void death(){
-  if(monsterAttack()){
-    //delete life and reset person position
+  if( hitObject(monOne.x1,monOne.x2,monOne.y1,monOne.y2)){
+    plyr.alive=0;
   }
-  //survived monster attck reset posn position
 }
 
+float a[3] = {1.1, 2.2, 3.3};
 void monsterAttack(){
-  
+  char *attack = "pause.wav";
+  play(attack);
+  plyr.alive =1;
+  int time = 0;
+  int b =0;
+  f3d_lcd_fillScreen(WHITE);
+  f3d_lcd_drawString(0,100,"MONSTER ATTACK SHAKE THE BOARD TO LIVE!",BLACK,WHITE);
+  delay(10);
+  int xPrev =0;
+  int yPrev =0;
+  int zPrev =0;
+  int xValue,yValue,zValue=0;
+  while(b<3){
+    time= time+1;
+    
+    drawRect(0,time,0,10,BLACK);
+    
+    f3d_gyro_getdata(a);
+    xPrev = xValue;
+    yPrev = yValue;
+    zPrev = zValue;
+    xValue = a[0];
+    yValue = a[1];
+    zValue = a[2];
+
+    if(xValue!=xPrev && yValue!=yPrev && zValue !=zPrev){
+      ++b;
+    }
+    if(b==1){
+      f3d_lcd_fillScreen(YELLOW);
+    }
+    if(b==2){
+      f3d_lcd_fillScreen(RED);
+    }
+    if(time==64){
+      f3d_lcd_drawString(0,120,"HURRY HE IS HALFWAY DONE EATING YOU",BLACK,WHITE); 
+      delay(1000);
+    }
+    if(time>128){
+      f3d_lcd_drawString(0,120,"DAVE LOST 1 LIFE",BLACK,WHITE); 
+      delay(1000);
+      plyr.life = plyr.life-1;
+      f3d_lcd_fillScreen(BLACK);
+      runLevelTwo();
+    }
+  }//while
+  f3d_lcd_drawString(0,140,"DAVE SURVIVED",BLACK,WHITE); 
+  f3d_lcd_fillScreen(BLACK);
+  runLevelTwo();
 }
+
+
 
 void onTick(){
   time++;
@@ -415,6 +468,7 @@ void onTick(){
   drawDoor();
   drawCoins();
   checkDie(); //checks to see if monster collides with the player
+  coinDisplay();
 
   if(monOne.xvel || monOne.yvel) {
     drawMonsterWhite();
@@ -452,6 +506,7 @@ void onTick(){
 void runLevelOne(){
   int game=1;
   f3d_lcd_fillScreen(WHITE);
+  f3d_led_all_off();
   f3d_lcd_drawString(0,100,"LEVEL ONE TUTORIALMAP", BLUE, WHITE);
   delay(50);
   transition();
@@ -459,6 +514,8 @@ void runLevelOne(){
   createMapOne();
   while(game){
      f3d_nunchuk_read(&nunchuk);
+     f3d_nunchuk_read(&nunchuk);
+     
      int joyx = nunchuk.jx;
      int joyy = nunchuk.jy;
      int c = nunchuk.c;
@@ -480,12 +537,33 @@ void runLevelOne(){
        jump();
      }
      if(c){
-       runLevelTwo();
+       int wait =1;
+       char *pause = "pause.wav";
+       play(pause);
+       // delay(10);
+       while(wait){
+	 f3d_nunchuk_read(&nunchuk);
+	 //delay(10);
+	 f3d_nunchuk_read(&nunchuk);
+	 c = nunchuk.c;
+	 if(c){
+	   play(pause);
+	   wait=0;
+	 }
+       }//while
+
      }
 
      if(doorCheck()){
        game =0;
+       f3d_led_all_on();
+       char *win = "flagpole.wav";
+       play(win);
      }
+     if(!plyr.alive){
+       monsterAttack();
+     }
+
      onTick();
   }//while
   printf("levelonecomplete");
@@ -526,6 +604,7 @@ void gameOver(){
 void runLevelTwo(){
   int game=1;
   f3d_lcd_fillScreen(WHITE);
+  f3d_led_all_off();
   f3d_lcd_drawString(0,90,"STARTING RANDOM LEVEL", BLUE, WHITE);
   levelDisplay();
   delay(50);
@@ -555,15 +634,35 @@ void runLevelTwo(){
        jump();
      }
      if(c){
-       runLevelTwo();
+       int wait =1;
+       char *pause = "pause.wav";
+       play(pause);
+       delay(1000);
+       while(wait){
+	 f3d_nunchuk_read(&nunchuk);
+	 
+	 int u = nunchuk.c;
+	 if(u){
+	   play(pause);
+	   wait=0;
+	 }
+       }
      }
      
      if(doorCheck()){
        game =0;
+       f3d_led_all_on();
+       char *win = "flagpole.wav";
+       play(win);
+     
      }
 
      if(plyr.life==0){
        gameOver();
+     }
+
+     if(!plyr.alive){
+       monsterAttack();
      }
      
      onTick();

@@ -11,9 +11,15 @@ void initMapTwo();
 
 void createMapOne();
 
+void drawLife();
+void coinCheck();
+void gravityMon();
+
 
 void jump();
 void jumpMon();
+
+void boxes(int xValue,int yValue,int zValue,int xPrev,int yPrev,int zPrev);
 
 void drawMonsterOne();
 void drawMonsterWhite();

@@ -1,0 +1,6 @@
+Jarod England and Steven Russell
+final_project.txt
+
+Game Concept:  The concept of the game is to make it to the door with the user player.  The player can jump and do other functions like pick up the 3 coins necessary to beat a level.  The red monster can grab the player however and the only way to not lose a life is to shake the board to save the player's life.
+
+Task Breakdown:  Steven's tasks was to make the monster function correctly by making it jump, find walls, and not go through obstacles.  Steven also made the AI for the monster which was made from random values.  Jarod made the main menu, added sound to the project, made the user player, made the coins part of the project, and made the transition page between levels and the menu.

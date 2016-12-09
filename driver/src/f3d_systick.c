@@ -63,15 +63,15 @@ void SysTick_Handler(void) {
      f3d_systick_init();
    }
  }
- if(i == 7) {
-   f3d_led_all_off();
-   f3d_led_on(i);
-   i = 0;
- }
- else {
-   f3d_led_all_off();
-   f3d_led_on(i);
-   i++;
- }
+ //if(i == 7) {
+ //  f3d_led_all_off();
+ //  f3d_led_on(i);
+ //  i = 0;
+ // }
+ //else {
+ // f3d_led_all_off();
+ // f3d_led_on(i);
+ // i++;
+ //}
 }
 /* f3d_systick.c ends here */

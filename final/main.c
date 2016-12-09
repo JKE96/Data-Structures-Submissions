@@ -50,6 +50,11 @@
 //#include "play.h"
 
 int init(){
+  f3d_led_init(); //initializes led
+  f3d_user_btn_init(); //initializes button
+
+  f3d_uart_init();  
+  f3d_gyro_init(); //initializes the gyro
   setvbuf(stdin, NULL, _IONBF, 0);
   setvbuf(stdout, NULL, _IONBF, 0);
   setvbuf(stderr, NULL, _IONBF, 0);
@@ -83,6 +88,7 @@ int main(void) {
   play(sound);
   displayMenu();
   printf("Menu has been displayed\n");
+  f3d_led_all_off();
   runMenu();
 
 

@@ -24,7 +24,12 @@ nunchuk_t nunchuk;
 void displayMenu() {
   f3d_lcd_fillScreen(WHITE);
   f3d_lcd_drawString(25, 10, "Super Dave TM", RED, WHITE);
- 
+  
+  f3d_lcd_drawString(50,65,"Dave",BLUE,WHITE);
+
+  drawRect(58,66,75,82,BLACK);
+  drawRect(59,65,76,81, WHITE);
+
   f3d_lcd_drawString(10, 100, "Play Game", RED, WHITE);
   f3d_lcd_drawString(10, 125, "Quit :( ",RED,WHITE);
 
@@ -41,6 +46,8 @@ void runMenu() {
     int num = nun.jy;
     int c = nun.c;
     int z = nun.z;
+
+    printf("%d|",num);
 
     drawRect(5,120,35,randomy(36,37),BLUE);
 
