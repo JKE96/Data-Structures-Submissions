@@ -34,4 +34,4 @@ main.o: main.c \
  ../driver/inc/f3d_mag.h ../driver/inc/f3d_nunchuk.h \
  ../driver/inc/f3d_rtc.h ../driver/inc/f3d_systick.h ff9b/src/ff.h \
  ff9b/src/integer.h ff9b/src/ffconf.h ff9b/src/diskio.h \
- ../driver/inc/f3d_user_btn.h functions.h menu.h
+ ../driver/inc/f3d_user_btn.h functions.h menu.h image.h game.h

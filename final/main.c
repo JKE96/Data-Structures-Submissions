@@ -45,7 +45,9 @@
 #include <f3d_user_btn.h>
 #include "functions.h"
 #include "menu.h"
-
+#include "image.h"
+#include "game.h"
+//#include "play.h"
 
 int init(){
   setvbuf(stdin, NULL, _IONBF, 0);
@@ -71,18 +73,22 @@ int init(){
   f3d_systick_init();
 }
 
-
-
 int main(void) { 
   init();
+  printf("Inits done\n");
   f3d_lcd_fillScreen(WHITE);
+  //  f_mount(0, &Fatfs);
+  char *sound= "coin.wav";
+  play(sound);
+  play(sound);
   displayMenu();
+  printf("Menu has been displayed\n");
   runMenu();
 
 
   while (1){
-    printf("The code/game is over, press reset to start over\n");
-    delay(100);
+    printf("Game over.Try restarting\n");
+    delay(10);
   };
 }
 

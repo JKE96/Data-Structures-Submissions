@@ -22,20 +22,29 @@
 struct Player {
   int x;
   int y;
+  int xvel;
+  int yvel;
   int life;
+  int alive;
   int points;
   char name[20];
-};
+}player;
 
 struct Monster {
   int x;
   int y;
-  int life;
+  int alive;
 };
 
 struct Coin {
   int x;
   int y;
-  int life;
+  int alive;
 };
     
+struct Obstacle{
+  int x1;
+  int x2;
+  int y1;
+  int y2;
+}

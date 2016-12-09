@@ -45,9 +45,24 @@ void drawRect(int x1, int x2, int y1, int y2, uint16_t color){
   }
 }
 
+
 unsigned short lfsr = 0xACE1u;
 unsigned bit;
 unsigned rando(){ //the max number will be 65536 because it is 16 bit
   bit  = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5) ) & 1;
   return lfsr =  (lfsr >> 1) | (bit << 15);
+}
+
+int randomy(int one, int two){
+  int a =(int)rando();
+  double stuff = a/65536.0;
+  //printf("stuff:%f\n",stuff);
+
+  two= two-one+1;
+
+  double b = (stuff*(double)two) +(double)one;
+  //printf("b: %f\n",b);
+  int c = (int)b;
+  //printf("c:%d\n",c);
+  return c;
 }

@@ -40,10 +40,6 @@
 #include <stdio.h>
 #include <math.h>
 
-void die (FRESULT rc) {
-  printf("Failed with rc=%u.\n", rc);
-  while (1);
-}
 
 FRESULT rc;			/* Result code */
 DIR dir;			/* Directory object */
@@ -103,7 +99,7 @@ void drawPicture(int orient, char *name) {
   }
 }
 
-int main(void) { 
+int mainy(void) { 
 
   setvbuf(stdin, NULL, _IONBF, 0);
   setvbuf(stdout, NULL, _IONBF, 0);
@@ -177,31 +173,23 @@ int main(void) {
     //draws pictures depending on value of task, prints value of task to serialT
     if(task == 0) {
       if (fl[1] < 0.05 && fl[1] > -0.05) //Logic to determine orientation
-	drawPicture(1, "DOG.BMP");
+	drawPicture(1, "player.bmp");
       else 
-	drawPicture(0, "DOG.BMP");
+	drawPicture(0, "player.bmp");
     }
     if(task == 1) {
       if (fl[1] < 0.05 && fl[1] > -0.05)
-	drawPicture(1, "CAT.BMP");
+	drawPicture(1, "monster.bmp");
       else
-	drawPicture(0, "CAT.BMP");
+	drawPicture(0, "monster.bmp");
     }
     if(task == 2) {
       if (fl[1] < 0.05 && fl[1] > -0.05)
-	drawPicture(1, "SMILEY.BMP");
+	drawPicture(1, "coin.bmp");
       else
-	drawPicture(0, "SMILEY.BMP");
+	drawPicture(0, "coin.bmp");
     }
   }
 }
-
-#ifdef USE_FULL_ASSERT
-void assert_failed(uint8_t* file, uint32_t line) {
-/* Infinite loop */
-/* Use GDB to find out why we're here */
-  while (1);
-}
-#endif
 
 /* main.c ends here */

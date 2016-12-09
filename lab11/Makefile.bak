@@ -8,11 +8,8 @@ ASFLAGS = -g
 # object files
 
 OBJS=  $(STARTUP)   main.o \
-		image.o \
-		menu.o \
-            game.o \
-            functions.o \
-            f3d_led.o \
+		   queue.o \
+	       f3d_led.o \
             f3d_uart.o \
             f3d_lcd_sd.o \
             f3d_systick.o\
@@ -38,7 +35,6 @@ OBJS=  $(STARTUP)   main.o \
             stm32f30x_misc.o \
             stm32f30x_dma.o\
             stm32f30x_dac.o\
-            queue.o \
             ff.o \
             newlib_stubs.o\
             mmcbb.o\

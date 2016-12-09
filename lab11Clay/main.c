@@ -250,6 +250,9 @@ int main(void) {
   
 	f_mount(0, &Fatfs);/* Register volume work area */
 
+	char *thermo = "thermo.wav";
+	play(thermo);
+
 	display_and_store();
 	selector_display(current_file);
 	

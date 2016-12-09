@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <f3d_user_btn.h>
+#include "game.h"
 
 nunchuk_t nunchuk;
 
@@ -27,12 +28,12 @@ void displayMenu() {
   f3d_lcd_drawString(10, 100, "Play Game", RED, WHITE);
   f3d_lcd_drawString(10, 125, "Quit :( ",RED,WHITE);
 
-  draw(0,0);
 }
 
 void runMenu() {
-  int starting =0; //boolean for checking if it is starting
-  int curMenu=0; //this will hold the curMenu information that the user is on
+  char *sound = "pause.wav";
+  int starting = 0; //boolean for checking if it is starting
+  int curMenu = 0; //this will hold the curMenu information that the user is on
 
   while(!starting) {
     nunchuk_t nun;
@@ -40,6 +41,9 @@ void runMenu() {
     int num = nun.jy;
     int c = nun.c;
     int z = nun.z;
+
+    drawRect(5,120,35,randomy(36,37),BLUE);
+
 
     if(num>240 ){
       curMenu=0;
@@ -56,13 +60,19 @@ void runMenu() {
       starting=1;
     }
   }
-
+ 
   if(curMenu==0){
+    delay(10);
+    play(sound);
+    delay(10);
     f3d_lcd_drawString(10, 125, "Starting the game!",RED,WHITE);
-    
-    //runGame(); //THIS IS THE FUNCTION THAT STARTS THE GAME!!
+    printf("tstart");
+    transition();
+    printf("gstart");
+    startGame(); //THIS IS THE FUNCTION THAT STARTS THE GAME!!
   }
   else{
+    play(sound);
     f3d_lcd_drawString(10, 125, "Quitting game!",RED,WHITE);
     delay(200);
     f3d_lcd_fillScreen(WHITE);

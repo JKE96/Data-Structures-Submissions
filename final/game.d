@@ -1,4 +1,4 @@
-image.o: image.c \
+game.o: game.c \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/CMSIS/Device/ST/STM32F30x/Include/stm32f30x.h \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/CMSIS/Include/core_cm4.h \
  /l/arm2/STM32F3-Discovery_FW_V1.1.0/Libraries/CMSIS/Include/core_cmInstr.h \
@@ -32,5 +32,6 @@ image.o: image.c \
  ../driver/inc/f3d_gyro.h ../driver/inc/f3d_lcd_sd.h \
  ../driver/inc/f3d_i2c.h ../driver/inc/f3d_accel.h \
  ../driver/inc/f3d_mag.h ../driver/inc/f3d_nunchuk.h \
- ../driver/inc/f3d_rtc.h ff9b/src/ff.h ff9b/src/integer.h \
- ff9b/src/ffconf.h ff9b/src/diskio.h
+ ../driver/inc/f3d_rtc.h ../driver/inc/f3d_systick.h ff9b/src/ff.h \
+ ff9b/src/integer.h ff9b/src/ffconf.h ff9b/src/diskio.h \
+ ../driver/inc/f3d_user_btn.h game.h

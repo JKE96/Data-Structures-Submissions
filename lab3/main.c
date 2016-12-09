@@ -42,8 +42,8 @@ int main(void) {
     }
     else{
       f3d_led_on(light);
-    delay();
-    light++;
+      delay();
+      light++;
     }
   }
 }

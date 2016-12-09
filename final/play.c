@@ -1,30 +1,3 @@
-/* main.c --- 
- * 
- * Filename: main.c
- * Description: 
- * Author: 
- * Maintainer: 
- * Created: Thu Jan 10 11:23:43 2013
- * Last-Updated: 
- *           By: 
- *     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
- */
-
-/* Commentary: 
- * 
- * 
- * 
- */
-
-/* Change log:
- * 
- * 
- */
-/* Code: */
-
 #include <stm32f30x.h>  // Pull in include files for F30x standard drivers
 #include <f3d_led.h>     // Pull in include file for the local drivers
 #include <f3d_uart.h>
@@ -52,21 +25,12 @@ FIL fid;        /* File object */
 BYTE Buff[512];     /* File read buffer */
 int ret;
 
-static char files[10][30];
-int number_of_files = 0;
-int current_file = 0;
-
 const char *b[1];
+int mode = 0;
 
 extern uint8_t Audiobuf[AUDIOBUFSIZE];
 extern int audioplayerHalf;
 extern int audioplayerWhole;
-
-FATFS Fatfs;        /* File system object */
-FIL fid;            /* File object */
-BYTE Buff[512];     /* File read buffer */
-int ret;
-nunchuk_t nunchuk;
 
 FRESULT rc;			/* Result code */
 DIR dir;			/* Directory object */
@@ -103,7 +67,7 @@ void die (FRESULT rc) {
 }
 
 int play(char *name) {
-	rc = f_open(&fid, name, FA_READ);
+  	rc = f_open(&fid, name, FA_READ);
 
 	if (!rc) {
 	struct ckhd hd;
@@ -165,128 +129,7 @@ int play(char *name) {
   return 0;
 }
 
-//Display the current files 
-void display_and_store() {
-	int x = 20;
-	int y = 10;
-	int i = 0;
-	rc = f_opendir(&dir, "");
-	if (rc) die(rc);
-	for (;;) {
-		delay(30);
-		rc = f_readdir(&dir, &fno);		/* Read a directory item */
-		if (rc || !fno.fname[0]) break;	/* Error or end of dir */
-		if (fno.fattrib & AM_DIR);
-		else {
-			strcpy(files[i], fno.fname);
-			f3d_lcd_drawString(x, y, files[i], BLACK, WHITE);
-			y += 10;
-			i++;
-			number_of_files++;
-		}
-	}
-}
 
-//Displays the selector for the file to play from the SD card based on the offset you pass it, which should be the current file to play
-void selector_display(int offset) {
-	f3d_lcd_fillScreen(WHITE);
-	int i;
-	int x = 20;
-	int y = 10;
-	for(i = 0; i < number_of_files; i++) {
-		f3d_lcd_drawString(x, y, files[i], BLACK, WHITE);
-		y += 10;
-	}
-	int newx;
-	int newy;
-	int y_offset = ((offset + 1) * 10) + 5;
-	for(newx = 10; newx < 15; newx++) {
-		for(newy = (offset + 1) * 10; newy < y_offset; newy++) {
-			f3d_lcd_drawPixel(newx, newy, RED);
-		}
-		f3d_lcd_drawPixel(newx, newy, RED);
-	}
-}
-
-//checks if the current file has a .wav extension
-int check_extension() {
-	int i;
-	for(i = 0; i < sizeof(files[current_file]); i++) {
-		if(files[current_file][i] == '.') {
-			if(files[current_file][i+1] == 'W' && files[current_file][i+2] == 'A' && files[current_file][i+3] == 'V')
-				return 1;
-		}
-	}
-	return 0;
-}
-
-
-int main(void) { 
-
-	setvbuf(stdin, NULL, _IONBF, 0);
-	setvbuf(stdout, NULL, _IONBF, 0);
-	setvbuf(stderr, NULL, _IONBF, 0);
-  
-	//inits
-	f3d_delay_init();
-	f3d_uart_init();
-	delay(10);
-	f3d_lcd_init();
-	delay(10);
-	f3d_i2c1_init();
-	delay(10);
-	f3d_rtc_init();
-	delay(10);
-	f3d_nunchuk_init();
-	delay(10);
-	f3d_timer2_init();
-	delay(10);
-	f3d_dac_init();
-	delay(10);
-	f3d_systick_init();
-
-
-	f3d_lcd_fillScreen(WHITE);
-  
-	f_mount(0, &Fatfs);/* Register volume work area */
-
-	display_and_store();
-	selector_display(current_file);
-	
-	//Based on nunchuk input, play the file, change the file to be played, and display the new selector for the file to be played
-	while(1) {
-		f3d_nunchuk_read(&nunchuk);
-		if(nunchuk.z == 1) {
-			if(check_extension())
-				play(files[current_file]);
-		}
-		if(nunchuk.jx == 0x00) {
-			if(current_file == 0)
-				current_file = number_of_files - 1;
-			else
-				current_file--;
-			selector_display(current_file);
-		}
-		if(nunchuk.jx == 0xff) {
-			if(current_file == number_of_files - 1)
-				current_file = 0;
-			else
-				current_file++;
-			selector_display(current_file);
-		}
-		delay(50);
-	}
-  
-  while (1);
-}
-
-#ifdef USE_FULL_ASSERT
-void assert_failed(uint8_t* file, uint32_t line) {
-  /* Infinite loop */
-  /* Use GDB to find out why we're here */
-  while (1);
-}
-#endif
 
 
 /* main.c ends here */
